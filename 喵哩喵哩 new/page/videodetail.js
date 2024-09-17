@@ -129,6 +129,28 @@ Page(
       params = JSON.parse(param)
       console.log(param);
     },
+    starFunc(folderId) {
+      this.request({
+        method: "SENDBILIPOST",
+        data: {
+          DedeUserID: localStorage.getItem("DedeUserID"),
+          SESSDATA: localStorage.getItem("SESSDATA"),
+          bili_jct: localStorage.getItem("bili_jct"),
+          DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
+          buvid3: localStorage.getItem("buvid3"),
+        }, 
+        content_type: "application/x-www-form-urlencoded",
+        parameters: `bvid=${params.bv}&like=1&csrf=${localStorage.getItem("bili_jct")}`,
+        url: `https://api.bilibili.com/x/v3/fav/resource/deal?rid=${params.id}&type=2&csrf=${localStorage.getItem("bili_jct")}&add_media_ids=${folderId}`,
+        type: "json"
+      })
+        .then((res) => {
+          
+        })
+        .catch((res) => {
+          
+        });
+    },
     build() {
       this.getCid(params.bv)
 
@@ -240,24 +262,10 @@ Page(
               type: "json"
             })
               .then((res) => {
-                console.log(res.body.data.Card.card.fans);
-                this.getrenshu()
-                fensi.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.Card.card.fans).toString() + '粉丝')
-                zan.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.View.stat.like).toString() + '点赞')
-                view.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.View.stat.view).toString() + '播放')
-                time.setProperty(hmUI.prop.TEXT, '发布于 ' + timestampToDateTime(res.body.data.View.pubdate))
-                bv.setProperty(hmUI.prop.TEXT, 'BV' + params.bv)
-                uname.setProperty(hmUI.prop.TEXT, res.body.data.View.owner.name)
+                
               })
               .catch((res) => {
-                console.log(res.body.data.Card.card.fans);
-                this.getrenshu()
-                fensi.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.Card.card.fans).toString() + '粉丝')
-                zan.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.View.stat.like).toString() + '点赞')
-                view.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.View.stat.view).toString() + '播放')
-                time.setProperty(hmUI.prop.TEXT, '发布于 ' + timestampToDateTime(res.body.data.View.pubdate))
-                bv.setProperty(hmUI.prop.TEXT, 'BV' + params.bv)
-                uname.setProperty(hmUI.prop.TEXT, res.body.data.View.owner.name)
+                
               });
           })
     
@@ -266,23 +274,38 @@ Page(
             y: 628,
             src: "bi.png",
           })
-    
+
           hmUI.createWidget(hmUI.widget.IMG, {
             x: 341,
             y: 628,
             src: "star.png",
           }).addEventListener(hmUI.event.CLICK_DOWN, () => {
-            push({
-              url: "page/videoreplies",
-              params: JSON.stringify({
-                img_src: params.img_src,
-                vid_title: params.vid_title,
-                bv: params.bv,
-                cid: params.cid,
-                up_mid: params.up_mid,
-                id: params.id
+            this.request({
+              method: "SENDBILIGET",
+              data: {
+                DedeUserID: localStorage.getItem("DedeUserID"),
+                SESSDATA: localStorage.getItem("SESSDATA"),
+                bili_jct: localStorage.getItem("bili_jct"),
+                DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
+                buvid3: localStorage.getItem("buvid3"),
+              }, 
+              content_type: "application/x-www-form-urlencoded",
+              parameters: `bvid=${params.bv}&like=1&csrf=${localStorage.getItem("bili_jct")}`,
+              url: `https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=${localStorage.getItem("DedeUserID")}&type=0`,
+              type: "json"
             })
-            })
+              .then((res) => {
+                
+              })
+              .catch((res) => {
+                res.body.data.list.forEach(folder => {
+                    if (folder.title === "默认收藏夹") {
+                        this.starFunc(folder.id)
+                    }
+                });
+              });
+
+
           })
           /* hmUI.createWidget(hmUI.widget.IMG, {
             x: 351,
@@ -345,6 +368,51 @@ Page(
               })
             },
           });
+          hmUI.createWidget(hmUI.widget.BUTTON, {
+            x: 60,
+            y: 1230,
+            w: px(360),
+            h: px(100),
+            text_size: px(36),
+            radius: 30,
+            normal_color: 0x222222,
+            press_color: 0x101010,
+            text: "发弹幕",
+            click_func: (button_widget) => {
+              push({
+                url: "page/board", 
+                params: JSON.stringify({
+                  type: "senddm",
+                  cid: cid,
+                  id: params.id
+              })
+              })
+            },
+          });
+          // hmUI.createWidget(hmUI.widget.BUTTON, {
+          //   x: 60,
+          //   y: 1340,
+          //   w: px(360),
+          //   h: px(100),
+          //   text_size: px(36),
+          //   radius: 30,
+          //   normal_color: 0x222222,
+          //   press_color: 0x101010,
+          //   text: "看弹幕",
+          //   click_func: (button_widget) => {
+          //     push({
+          //       url: "page/dm", 
+          //       params: JSON.stringify({
+          //         img_src: params.img_src,
+          //         vid_title: params.vid_title,
+          //         bv: params.bv,
+          //         cid: params.cid,
+          //         up_mid: params.up_mid,
+          //         id: params.id
+          //       })
+          //     })
+          //   },
+          // });
     },
     
     getVideoList() {

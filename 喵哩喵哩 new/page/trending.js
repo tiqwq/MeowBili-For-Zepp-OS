@@ -18,7 +18,7 @@ function decodeUnicodeEscape(data) {
   return data;
 }
 let buttonList = []
-for(let i = 0; i < 5; i++) {
+for(let i = 0; i < 10; i++) {
   buttonList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
     x: 50,
     y: 100 + i * 32,
@@ -80,7 +80,7 @@ Page(
           .then((res) => {
           })
           .catch((res) => {
-            for(let i = 0; i < 5; i++) {
+            for(let i = 0; i < 10; i++) {
               buttonList[i].setProperty(hmUI.prop.TEXT,JSON.parse( decodeUnicodeEscape(res.body)).list[i].keyword)
               buttonList[i].addEventListener(hmUI.event.CLICK_UP, () => {
                 push({

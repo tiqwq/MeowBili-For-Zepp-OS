@@ -7,10 +7,72 @@ import { showToast } from '@zos/ui'
 import { back } from '@zos/router'
 const localStorage = new LocalStorage()
 let params;
-
+const deviceid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (function (name) {
+  let randomInt = 16 * Math.random() | 0;
+  return ("x" === name ? randomInt : 3 & randomInt | 8).toString(16).toUpperCase()
+}));
 Page(
   BasePage({
-    fetchFunc(text) {
+    sendMessage(id,text) {
+      this.request({
+        method: "SENDBILIPOST",
+        data: {
+          DedeUserID: localStorage.getItem("DedeUserID"),
+          SESSDATA: localStorage.getItem("SESSDATA"),
+          bili_jct: localStorage.getItem("bili_jct"),
+          DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
+          buvid3: localStorage.getItem("buvid3"),
+        }, 
+        content_type: "application/x-www-form-urlencoded",
+        url: `https://api.vc.bilibili.com/web_im/v1/web_im/send_msg?msg[sender_uid]=${localStorage.getItem("DedeUserID")}&msg[receiver_id]=${id}&msg[receiver_type]=1&msg[msg_type]=1&msg[dev_id]=${deviceid}&msg[timestamp]=${parseInt(new Date().getTime()/1000)}&msg[content]={"content":"${text}"}&csrf=${localStorage.getItem("bili_jct")}`,
+        type: "json"
+      })
+        .then((res) => {
+
+        })
+        .catch((res) => {
+
+        });
+    },
+    sendDm(aid,cid,text) {
+      this.request({
+        method: "SENDWBIPOST",
+        data: {
+          DedeUserID: localStorage.getItem("DedeUserID"),
+          SESSDATA: localStorage.getItem("SESSDATA"),
+          bili_jct: localStorage.getItem("bili_jct"),
+          DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
+          buvid3: localStorage.getItem("buvid3"),
+        },
+        url: "https://api.bilibili.com/x/v2/dm/post",
+        type: "json",
+        info: localStorage.getItem('login_info'),
+        paramsobj: {
+           type:1,
+           oid:cid,
+           msg:text,
+           aid:aid,
+           progress:0,
+           color:16777215, 
+           fontsize:25, 
+           pool:0,
+           mode:1,
+           rnd:Date.now() * 1000000,
+           csrf:localStorage.getItem("bili_jct")
+        }
+      })
+        .then((res) => {
+          if (res.body.code == 0) {
+            showToast("弹幕发送成功");
+          }
+        })
+        .catch((res) => {
+          if (res.body.code == 0) {
+            showToast("弹幕发送成功");
+          }
+        });
+    },
+    sendReply(text) {
       this.request({
         method: "SENDBILIPOST",
         data: {
@@ -24,7 +86,6 @@ Page(
         type: "json"
       })
       .then((res) => {
-        // 处理成功响应
       })
       .catch((err) => {
         if (err.body.code == 0) {
@@ -32,7 +93,6 @@ Page(
             text: '发送成功'
           })
           back()
-
         } else {
           showToast({
             text: '发送失败，原因是' + err.body.message
@@ -437,15 +497,25 @@ Page(
           if (typeof parsedParams === 'object' && parsedParams !== null && !Array.isArray(parsedParams)) {
             if (parsedParams.type === "sendreply") {
               console.log(1);
-              this.fetchFunc(inputText)
+              this.sendReply(inputText)
 
-            } else {
+            } else if (parsedParams.type === "senddm") {
               console.log(2);
+              this.sendDm(parsedParams.id,parsedParams.cid,inputText)
 
+            } else if (parsedParams.type === "sendmsg") {
+              console.log(3);
+              let talk_id
+              if (parsedParams.receiver_id == localStorage.getItem("DedeUserID")) {
+                talk_id = parsedParams.sender_uid
+              } else {
+                talk_id = parsedParams.receiver_id
+              }
+              this.sendMessage(talk_id,inputText)
 
             }
           } else {
-            console.log(3);
+            console.log(3); 
 
           }
         } catch (e) {

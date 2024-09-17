@@ -161,15 +161,25 @@ const a = hmUI.createWidget(hmUI.widget.TEXT, {
           } 
         }); 
     },
-    async getbuvid3() { 
-      try {
-        const result = await this.httpRequest({
-          method: 'get',
-          url: 'https://api.bilibili.com/x/frontend/finger/spi',
-        });
-        buvid3 = result.body.data.b_3;
-        console.log(result.body.data.b_3);
-      } catch (error) { }
+    getbuvid3() { 
+      this.request({
+        method: "SENDBILIGET",
+        data: {
+          DedeUserID: localStorage.getItem("DedeUserID"),
+          SESSDATA: localStorage.getItem("SESSDATA"),
+          bili_jct: localStorage.getItem("bili_jct"),
+          DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"), 
+          buvid3: localStorage.getItem("buvid3"),
+        },
+        url: "https://api.bilibili.com/x/frontend/finger/spi", 
+        type: "json"
+      })
+        .then((res) => {})
+        .catch((res) => {
+          buvid3 = res.body.data.b_3;
+
+        }); 
+      
     }
   })
 );

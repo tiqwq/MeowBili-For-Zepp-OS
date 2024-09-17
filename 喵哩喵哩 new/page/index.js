@@ -41,12 +41,9 @@ Page(
             url: "https://api.bilibili.com/x/web-interface/nav", 
             type: "json"
           })
-            .then((res) => {
-              localStorage.setItem('login_info',res)
-              console.log(res);  
-            })
+            .then((res) => {})
             .catch((res) => {
-              localStorage.setItem('login_info',res)
+              localStorage.setItem('login_info',res.body.data.wbi_img)
               console.log(res);
             });  
     }

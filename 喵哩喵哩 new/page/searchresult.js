@@ -120,7 +120,7 @@ Page(
                   push({
                     url: 'page/videodetail',
                     params: JSON.stringify({
-                      img_src: res.body.data.result[i].pic,
+                        img_src: res.body.data.result[i].pic,
                         vid_title: res.body.data.result[i].title,
                         bv: res.body.data.result[i].bvid,
                         up_mid: res.body.data.result[i].mid,

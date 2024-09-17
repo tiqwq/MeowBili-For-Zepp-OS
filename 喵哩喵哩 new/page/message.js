@@ -72,7 +72,14 @@ Page(
             color: 0xffffff,
             text_style: hmUI.text_style.WRAP,
           }).addEventListener(hmUI.event.CLICK_UP, () => {
-
+            push({
+              url: "page/board",
+              params: JSON.stringify({
+                type: "sendmsg",
+                sender_uid: params.id.sender_uid,
+                receiver_id: params.id.receiver_id
+              })
+            })
           })
 
     },
