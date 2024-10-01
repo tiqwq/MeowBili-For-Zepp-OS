@@ -15,10 +15,10 @@ function logStringInChunks(text: string): void {
     }
 }
 
-let textList: hmUI.widget.TEXT[] = [];
-let newTextList: hmUI.widget.TEXT[] = [];
-let newNewTextList: hmUI.widget.TEXT[] = [];
-let buttonList: hmUI.widget.BUTTON[] = [];
+let textList: any;
+let newTextList: any;
+let newNewTextList: any;
+let buttonList: any;
 
 let cishu = 1;
 
@@ -53,8 +53,7 @@ Page(
         normal_color: 0x222222,
         press_color: 0x101010,
         text: "上一页",
-        click_func: (button_widget: hmUI.widget.BUTTON) => {
-          logger.log("click button");
+        click_func: (button_widget: any) => {
           cishu--;
           this.getVideoList();
         },
@@ -69,8 +68,7 @@ Page(
         normal_color: 0x222222,
         press_color: 0x101010,
         text: "下一页",
-        click_func: (button_widget: hmUI.widget.BUTTON) => {
-          logger.log("click button");
+        click_func: (button_widget: any) => {
           cishu++;
           this.getVideoList();
         },
@@ -102,16 +100,16 @@ Page(
 
             const unameLayout = getTextLayout(uname, {
               text_size: 16,
-              text_width: px(360)
+              text_width: Number(px(360))
             });
             const messageLayout = getTextLayout(message, {
               text_size: 20,
-              text_width: px(400),
+              text_width: Number(px(400)),
               wrapped: 1
             });
             const timeDescLayout = getTextLayout(time_desc, {
               text_size: 16,
-              text_width: px(400)
+              text_width: Number(px(400))
             });
 
             const totalHeight = unameLayout.height + messageLayout.height + timeDescLayout.height + 40; // 总高度
@@ -133,7 +131,7 @@ Page(
 
             if (!textList[i]) {
               textList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
-                x: (480 - px(360)) / 2,
+                x: (480 - Number(px(360))) / 2,
                 y: yOffset,
                 w: px(360),
                 h: unameLayout.height,
@@ -152,7 +150,7 @@ Page(
 
             if (!newTextList[i]) {
               newTextList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
-                x: (480 - px(360)) / 2,
+                x: (480 - Number(px(360))) / 2,
                 y: newTextYOffset,
                 w: px(360),
                 h: messageLayout.height,
@@ -171,7 +169,7 @@ Page(
 
             if (!newNewTextList[i]) {
               newNewTextList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
-                x: (480 - px(360)) / 2 + 200,
+                x: (480 - Number(px(360))) / 2 + 200,
                 y: yOffset,
                 w: px(400),
                 h: timeDescLayout.height,

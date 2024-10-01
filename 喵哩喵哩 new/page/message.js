@@ -51,7 +51,6 @@ Page(
       }
     },
     build() {
-
         this.get()
         // this.post()
           // this.getVideoList();
@@ -81,9 +80,7 @@ Page(
               })
             })
           })
-
     },
-
     post() {
       this.request({
         method: "SENDBILIPOST",

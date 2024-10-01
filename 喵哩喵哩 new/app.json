@@ -9,7 +9,7 @@
       "name": "1.0.1"
     },
     "icon": "icon.png",
-    "vender": "YiQWQ,Struggle",
+    "vender": "易奥林,Struggle",
     "description": "A sample application to demonstrate the fetch API"
   },
   "permissions": [
@@ -39,10 +39,12 @@
             "page/videodetail",
             "page/message",
             "page/messageList",
-            "page/board"
+            "page/board",
+            "page/columns",
+            "page/searchresultcolumns"
           ]
         },
-        "app-side": {
+        "app-side": { 
           "path": "app-side/index"
         }
       },

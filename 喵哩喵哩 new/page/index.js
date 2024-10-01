@@ -1,15 +1,20 @@
 import { push } from '@zos/router'
+import { replace } from '@zos/router'
 import { LocalStorage } from '@zos/storage'
 import { BasePage } from "@zeppos/zml/base-page";
-import { back } from '@zos/router'
-
+import * as hmUI from "@zos/ui";
+import { px } from '@zos/utils'
 const localStorage = new LocalStorage()
-const app = getApp()
 Page(
     BasePage({
     build() {
       let that = this
-
+      hmUI.createWidget(hmUI.widget.IMG, {
+        x: px(120),
+        y: px(120),
+        src: 'icon.png',
+      })
+      setTimeout(()=> {
         if (localStorage.getItem('SESSDATA') == undefined || localStorage.getItem('DedeUserID') == undefined || localStorage.getItem('bili_jct') == undefined || localStorage.getItem('buvid3') == undefined || localStorage.getItem('DedeUserID__ckMd5') == undefined || localStorage.getItem('bili_jct') == undefined) {
             push({
                 url: 'page/login',
@@ -17,16 +22,12 @@ Page(
             console.log('login');
         } else {
             that.getWbi()
-            push({
+            replace({
                 url: 'page/videopush',
             })
             console.log('video');
         }
-      if (app._options.globalData.back == 1) {
-        console.log(app._options.globalData.back);
-        back()
-      }
-
+      }, 1000)
     },
     getWbi() {
         this.request({

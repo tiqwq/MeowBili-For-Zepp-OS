@@ -27,35 +27,7 @@ let params;
 //   h: px(480),
 //   src: "data://download/1.png",
 // })
-const ai = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 40,
-  y: 100,
-  w: 380,
-  h: px(480),
-  text_size: 20, 
-  text: "",
-  color: 0xffffff,
-  text_style: hmUI.text_style.WRAP,
-})
-    // 开始或重启动画的函数
-    const startAnimation = () => {
-      clearInterval(animationInterval); // 清除之前的动画
-      new_content = "";
-      i = 0;
-      animationInterval = setInterval(() => {
-        if (i < content.length) {
-          new_content += content[i];
-          ai.setProperty(hmUI.prop.MORE, {
-            text: new_content,
-          });
-          i++;
-        } else {
-          clearInterval(animationInterval); // 动画完成后停止
-        }
-      }, 50);
-    };
-
-
+let ai;
 Page(
   BasePage({
     onInit(param) {
@@ -63,7 +35,17 @@ Page(
       console.log(param);
     }, 
     build() {
-          this.getVideoList();
+          ai = hmUI.createWidget(hmUI.widget.TEXT, {
+            x: 40,
+            y: 100,
+            w: 380,
+            h: px(480),
+            text_size: 20, 
+            text: "",
+            color: 0xffffff,
+            text_style: hmUI.text_style.WRAP,
+          })
+          this.getAiSummary();
           hmUI.createWidget(hmUI.widget.IMG, {
             x: 150,
             y: 50,
@@ -83,7 +65,7 @@ Page(
           }) // title
 
     },
-    getVideoList() {
+    getAiSummary() {
       this.request({
         method: "SENDWBIGET",
         data: {
@@ -102,9 +84,7 @@ Page(
         url: `https://api.bilibili.com/x/web-interface/view/conclusion/get`,
         type: "json"
       }) 
-        .then((res) => {
-
-        })
+        .then((res) => {})
         .catch((res) => {
           if (res.body.data.code == -1) ai.setProperty(hmUI.prop.TEXT, "不支持AI摘要（敏感内容等）或其他因素导致请求异常");
           else if (res.body.data.code == 1) ai.setProperty(hmUI.prop.TEXT, "无摘要（未识别到语音）");
@@ -114,17 +94,17 @@ Page(
             else {
               let new_content = "";
               let i = 0
-    let animationInterval = setInterval(() => {
-      if (i < res.body.data.model_result.summary.length) {
-        new_content += res.body.data.model_result.summary[i];
-        ai.setProperty(hmUI.prop.TEXT, new_content + " ●");
-        i++;
-      } else {
-        ai.setProperty(hmUI.prop.TEXT, new_content);
-        clearInterval(animationInterval);
-      }
-    }, 55);
-        }
+              let animationInterval = setInterval(() => {
+                if (i < res.body.data.model_result.summary.length) {
+                  new_content += res.body.data.model_result.summary[i];
+                  ai.setProperty(hmUI.prop.TEXT, new_content + " ●");
+                  i++;
+                } else {
+                  ai.setProperty(hmUI.prop.TEXT, new_content);
+                  clearInterval(animationInterval);
+                }
+              }, 55);
+            }
           }
         });
     }

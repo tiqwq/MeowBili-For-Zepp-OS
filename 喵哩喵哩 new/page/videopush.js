@@ -1,101 +1,30 @@
-import * as hmUI from "@zos/ui";
-import { createWidget, widget } from '@zos/ui'
+// 系统api导入
+import { createWidget, widget, prop, text_style, event } from '@zos/ui'
 import { scrollTo } from '@zos/page'
-import { log as Logger } from "@zos/utils";
 import { BasePage } from "@zeppos/zml/base-page";
 import { px } from "@zos/utils";
 import { push } from '@zos/router'
-const logger = Logger.getLogger("fetch_api");
 import { LocalStorage } from '@zos/storage'
+// 个人模块导入
+import { fetchVideoList } from "../func/fetch"; 
+import { formatNumber } from "../utils/utils";
+// 变量部分
 const localStorage = new LocalStorage()
-let list = localStorage.getItem("list", undefined)
-let textList = []
-let newTextList = []
-let newNewTextList = []
-let buttonList = []
-console.log(localStorage.getItem("login_info"));
-const app = getApp()
-app._options.globalData.back = 1
-let num = 1
-for (let i = 0; i < num; i++) {
-  buttonList[i] = hmUI.createWidget(hmUI.widget.BUTTON, {
-    x: 30,
-    y: 350,
-    w: 420,
-    h: 340,
-    radius: 40,
-    normal_color: 0x222222,
-    press_color: 0x101010,
-  })
-  //hmUI.createWidget(hmUI.widget.IMG,{
-  // x: 80,
-  // y: 350,
-  // src: 'spfm.png'
-  // })
-  textList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
-    x: 40,
-    y: 560,
-    w: 400,
-    h: px(88),
-    text_size: 28,
-    text: "",
-    color: 0xffffff,
-    text_style: hmUI.text_style.WRAP,
-  }) // title
-  hmUI.createWidget(hmUI.widget.IMG, {
-    x: 70,
-    y: 650 + i * 204,
-    src: 'watchnum.png'
-  })
-  newTextList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
-    x: 211,
-    y: 647 + i * 204,
-    w: px(360),
-    h: px(40),
-    text_size: 22,
-    text: "",
-    color: 0x9E9E9E,
-    text_style: hmUI.text_style.WRAP,
-  }) // uname
-  hmUI.createWidget(hmUI.widget.IMG, {
-    x: 185,
-    y: 653 + i * 204,
-    src: 'up.png'
-  })
-  newNewTextList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
-    x: 102,
-    y: 647 + i * 204,
-    w: px(360),
-    h: px(40),
-    text_size: 20,
-    text: "",
-    color: 0x9E9E9E,
-    text_style: hmUI.text_style.ELLIPSIS,
-  }) // viewNumber
-}
-function formatNumber(num) {
-  if (num < 1000) {
-    return num.toString();
-  }
-  else if (num < 10000) {
-    return (num / 1000).toFixed(1) + 'k';
-  }
-  else {
-    return (num / 10000).toFixed(1) + 'w'
-  }
-}
-hmUI.createWidget(hmUI.widget.IMG, {
-  x: 0,
-  y: 0,
-  w: px(480),
-  h: px(480),
-  src: "data://download/spfm.png",
-})
+let list = localStorage.getItem("list", undefined) // 视频列表
+let num = 10 // 视频显示数
+ 
 Page(
   BasePage({
+    state: {
+      textList: [],
+      newTextList: [],
+      newNewTextList: [], 
+      buttonList: []
+    },
     build() {
-      const scrollBar = createWidget(widget.PAGE_SCROLLBAR)
-      createWidget(hmUI.widget.TEXT, {
+      createWidget(widget.PAGE_SCROLLBAR)
+      this.createVideoList()
+      createWidget(widget.TEXT, {
         x: 200,
         y: 60,
         w: px(245),
@@ -103,57 +32,53 @@ Page(
         text_size: 38,
         text: "推荐",
         color: 0xffffff,
-        text_style: hmUI.text_style.WRAP,
-      }) // title
+        text_style: text_style.WRAP,
+      })
 
-      createWidget(hmUI.widget.FILL_RECT, {
+      createWidget(widget.FILL_RECT, {
         x: 110,
         y: 110,
         w: 106,
         h: 106,
         radius: 55,
         color: 0x171717
-      }).addEventListener(hmUI.event.CLICK_DOWN, function (info) {
+      }).addEventListener(event.CLICK_DOWN, function (info) {
         push({
           url: 'page/trending',
         })
       })
-      hmUI.createWidget(hmUI.widget.IMG, {
+      createWidget(widget.IMG, {
         x: 145,
         y: 145,
         src: 'search.png'
-      }).addEventListener(hmUI.event.CLICK_DOWN, function (info) {
+      }).addEventListener(event.CLICK_DOWN, function (info) {
         push({
           url: 'page/trending',
         })
       })
 
-      createWidget(hmUI.widget.FILL_RECT, {
+      createWidget(widget.FILL_RECT, {
         x: 260,
         y: 110,
         w: 106,
         h: 106,
         radius: 55,
         color: 0x171717
-      }).addEventListener(hmUI.event.CLICK_DOWN, function (info) {
-        // push({
-        //   url: 'page/board',
-        //   params: "message"
-        // })
+      }).addEventListener(event.CLICK_DOWN, function (info) {
         push({
           url: 'page/account'
         })
       })
-      hmUI.createWidget(hmUI.widget.IMG, {
+      createWidget(widget.IMG, {
         x: 295,
         y: 145,
         src: 'head.png'
-      }).addEventListener(hmUI.event.CLICK_DOWN, function (info) {
+      }).addEventListener(event.CLICK_DOWN, function (info) {
         push({
           url: 'page/account'
         })
       })
-      createWidget(hmUI.widget.FILL_RECT, {
+      createWidget(widget.FILL_RECT, {
         x: 30,
         y: 225,
         w: 420,
@@ -161,7 +86,7 @@ Page(
         radius: 40,
         color: 0x222222
       })
-      createWidget(hmUI.widget.TEXT, {
+      createWidget(widget.TEXT, {
         x: 60,
         y: 240,
         w: 380,
@@ -169,11 +94,11 @@ Page(
         text_size: 28,
         text: "欢迎使用MeowBili，这里是公告栏哦，请您签收awa!",
         color: 0xffffff,
-        text_style: hmUI.text_style.WRAP,
-      }) // title
-      hmUI.createWidget(hmUI.widget.BUTTON, {
+        text_style: text_style.WRAP,
+      })
+      createWidget(widget.BUTTON, {
         x: 60,
-        y: 700,
+        y: 3820,
         w: px(360),
         h: px(100),
         text_size: px(36),
@@ -181,9 +106,8 @@ Page(
         normal_color: 0x222222,
         press_color: 0x101010,
         text: "加载更多",
-        click_func: (button_widget) => {
-          logger.log("click button");
-          this.getVideoList();
+        click_func: () => {
+          this.getVideoList()
           scrollTo({
             y: -0,
             anim_rate: linear,
@@ -192,91 +116,126 @@ Page(
           })
         },
       });
-      if (list != undefined) {
-        for (let i = 0; i < num; i++) {
-          textList[i].setProperty(hmUI.prop.TEXT, list[i].title);
-          newTextList[i].setProperty(hmUI.prop.TEXT, list[i].owner.name);
-          newNewTextList[i].setProperty(hmUI.prop.TEXT, formatNumber(list[i].stat.view));
-          textList[i].setEnable(false)
-          buttonList[i].setProperty(hmUI.prop.MORE, {
+      if (list != undefined) this.readListStorage();
+      else this.getVideoList();
+    },
+    createVideoList() {
+      for (let i = 0; i < num; i++) {
+        this.state.buttonList[i] = createWidget(widget.BUTTON, {
+          x: 30,
+          y: 350 + i * 342,
+          w: 420,
+          h: 340,
+          radius: 40,
+          normal_color: 0x222222,
+          press_color: 0x101010,
+        })
+        this.state.textList[i] = createWidget(widget.TEXT, {
+          x: 40,
+          y: 560 + i * 342,
+          w: 400,
+          h: px(88),
+          text_size: 28,
+          text: "",
+          color: 0xffffff,
+          text_style: text_style.WRAP,
+        }) // 标题
+        createWidget(widget.IMG, {
+          x: 70,
+          y: 650 + i * 342,
+          src: 'watchnum.png'
+        })
+        this.state.newTextList[i] = createWidget(widget.TEXT, {
+          x: 211,
+          y: 647 + i * 342,
+          w: px(360),
+          h: px(40),
+          text_size: 22,
+          text: "",
+          color: 0x9E9E9E,
+          text_style: text_style.WRAP,
+        }) // up名字
+        createWidget(widget.IMG, {
+          x: 185,
+          y: 653 + i * 342,
+          src: 'up.png'
+        })
+        this.state.newNewTextList[i] = createWidget(widget.TEXT, {
+          x: 102,
+          y: 647 + i * 342,
+          w: px(360),
+          h: px(40),
+          text_size: 20,
+          text: "",
+          color: 0x9E9E9E,
+          text_style: text_style.ELLIPSIS,
+        }) // 播放量
+      }
+    },
+    readListStorage() {
+      for (let i = 0; i < num; i++) {
+        this.state.textList[i].setProperty(prop.TEXT, list[i].title);
+        this.state.newTextList[i].setProperty(prop.TEXT, list[i].owner.name);
+        this.state.newNewTextList[i].setProperty(prop.TEXT, formatNumber(list[i].stat.view));
+        this.state.textList[i].setEnable(false)
+        this.state.buttonList[i].setProperty(prop.MORE, {
+          x: 30,
+          y: 350 + i * 342,
+          w: 420,
+          h: 340,
+          radius: 40,
+          normal_color: 0x222222,
+          press_color: 0x101010,
+          click_func: () => {
+            push({
+              url: 'page/videodetail',
+              params: JSON.stringify({
+                img_src: list[i].pic,
+                vid_title: list[i].title,
+                bv: list[i].bvid,
+                cid: list[i].cid,
+                uname: list[i].owner.name,
+                up_mid: list[i].owner.mid,
+                id: list[i].id
+              })
+            })
+          },
+        })
+      }
+    },
+    getVideoList() {
+      fetchVideoList(this).then((res) => {
+        for (let i = 0; i < 10; i++) {
+          this.state.textList[i].setProperty(prop.TEXT, res.item[i].title);
+          this.state.newTextList[i].setProperty(prop.TEXT, res.item[i].owner.name);
+          this.state.newNewTextList[i].setProperty(prop.TEXT, formatNumber(res.item[i].stat.view, 'num'));
+          this.state.textList[i].setEnable(false);
+          this.state.buttonList[i].setProperty(prop.MORE, {
             x: 30,
-            y: 350,
+            y: 350 + i * 342,
             w: 420,
             h: 340,
             radius: 40,
             normal_color: 0x222222,
             press_color: 0x101010,
-            click_func: (button_widget) => {
-              
+            click_func: () => {
               push({
                 url: 'page/videodetail',
                 params: JSON.stringify({
-                  img_src: list[i].pic,
-                  vid_title: list[i].title,
-                  bv: list[i].bvid,
-                  cid: list[i].cid,
-                  uname: list[i].owner.name,
-                  up_mid: list[i].owner.mid,
-                  id: list[i].id
-                }),
-              })
-            },
-          })
-
+                  img_src: res.item[i].pic,
+                  vid_title: res.item[i].title,
+                  bv: res.item[i].bvid,
+                  cid: res.item[i].cid,
+                  up_mid: res.item[i].owner.mid,
+                  id: res.item[i].id
+                }), 
+              });
+            }
+          });
         }
-      }
-      else {
-        this.getVideoList();
-      }
-    },
-    getVideoList() {
-      this.request({
-        method: "SENDBILIGET",
-        data: {
-          DedeUserID: localStorage.getItem("DedeUserID"),
-          SESSDATA: localStorage.getItem("SESSDATA"),
-          bili_jct: localStorage.getItem("bili_jct"),
-          DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-          buvid3: localStorage.getItem("buvid3"),
-        },
-        url: "https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=4&ps=1",
-        type: "json"
-      })
-        .then((res) => {
-        })
-        .catch((res) => {
-          for (let i = 0; i < 1; i++) {
-            textList[i].setProperty(hmUI.prop.TEXT, res.body.data.item[i].title);
-            newTextList[i].setProperty(hmUI.prop.TEXT, res.body.data.item[i].owner.name);
-            newNewTextList[i].setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.item[i].stat.view));
-            textList[i].setEnable(false)
-            buttonList[i].setProperty(hmUI.prop.MORE, {
-              x: 30,
-              y: 350 + i * 204,
-              w: 420,
-              h: 340,
-              radius: 40,
-              normal_color: 0x222222,
-              press_color: 0x101010,
-              click_func: (button_widget) => {
-                console.log('assa');
-            localStorage.setItem("list", res.body.data.item)
-                push({
-                  url: 'page/videodetail',
-                  params: JSON.stringify({
-                    img_src: res.body.data.item[i].pic,
-                    vid_title: res.body.data.item[i].title,
-                    bv: res.body.data.item[i].bvid,
-                    cid: res.body.data.item[i].cid,
-                    up_mid: res.body.data.item[i].owner.mid,
-                    id: res.body.data.item[i].id
-                  }), 
-                })
-              },
-            })
-          }
-          localStorage.setItem("list", res.body.data.item)
-        });
+        localStorage.setItem("list", res.item);
+      }).catch((err) => {
+        console.error("可能是恩情还多了所以报错:", err);
+      });
     }
-  })
-);
+  }))

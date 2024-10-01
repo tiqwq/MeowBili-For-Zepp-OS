@@ -4,12 +4,49 @@ import { log as Logger } from "@zos/utils";
 import { BasePage } from "@zeppos/zml/base-page";
 import { createWidget, widget } from '@zos/ui'
 import { back } from '@zos/router'
-
+import '../utils/promise'
 import { LocalStorage } from '@zos/storage'
+import { RSA } from "../utils/rsa"
 const localStorage = new LocalStorage()
+import {  } from '../node_modules/crypto-js/aes'
 const logger = Logger.getLogger("fetch_api");
-import { parseBilibiliLoginUrl } from "../utils/utils";
+
 let qrcodeWidget;
+// 导入公钥
+const importPublicKey = () => {
+  return new Promise.resolve(
+    crypto.subtle.importKey(
+      "jwk",
+      {
+        kty: "RSA",
+        n: "y4HdjgJHBlbaBN04VERG4qNBIFHP6a3GozCl75AihQloSWCXC5HDNgyinEnhaQ_4-gaMud_GF50elYXLlCToR9se9Z8z433U3KjM-3Yx7ptKkmQNAMggQwAVKgq3zYAoidNEWuxpkY_mAitTSRLnsJW-NCTa0bqBFF6Wm1MxgfE",
+        e: "AQAB",
+      },
+      { name: "RSA-OAEP", hash: "SHA-256" },
+      true,
+      ["encrypt"]
+    )
+  );
+};
+
+// 加密数据并返回路径
+const getCorrespondPath = (timestamp, publicKey) => {
+  const data = new TextEncoder().encode(`refresh_${timestamp}`);
+  return crypto.subtle.encrypt({ name: "RSA-OAEP" }, publicKey, data)
+    .then(encrypted => new Uint8Array(encrypted))
+    .then(encryptedArray => {
+      return encryptedArray.reduce((str, c) => str + c.toString(16).padStart(2, "0"), "");
+    });
+};
+
+// 获取当前时间戳
+const ts = Date.now();
+
+// 导入公钥并获取对应路径
+importPublicKey()
+  .then(publicKey => getCorrespondPath(ts, publicKey))
+  .then(path => console.log(path))
+  .catch(error => console.error('Error:', error));
 function parseBilibiliUrl(url) {
   const params = {};
   const queryStart = url.indexOf('?');
@@ -45,9 +82,10 @@ Page(
     },
     fetchData() {
       this.request({
-        method: "GET_QR",
+        method: "GET_DATA",
       })
         .then((data) => {
+          logger.log("receive data");
           const { result = {} } = data;
           if (!qrcodeWidget) {
             qrcodeWidget = createWidget(widget.QRCODE, {
@@ -128,7 +166,7 @@ Page(
             hmUI.showToast({
               text: '登录成功！'
             })
-            let userData = parseBilibiliLoginUrl(res.body.data.url)
+            let userData = parseBilibiliUrl(res.body.data.url)
             for (const key in userData) {
               if (userData.hasOwnProperty(key) && key !== 'gourl' && key !== 'first_domain' && key !== 'Expires') {
                 console.log(key,userData[key]);

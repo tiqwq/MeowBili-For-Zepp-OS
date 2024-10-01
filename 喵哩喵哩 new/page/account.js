@@ -3,67 +3,87 @@ import { BasePage } from "@zeppos/zml/base-page"
 import { LocalStorage } from '@zos/storage'
 import { push } from '@zos/router'
 const localStorage = new LocalStorage()
-let midResult
-const uname = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 40,
-  y: 60,
-  w: 192,
-  h: 192,
-  text: ""
-});
-const uid = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 40,
-  y: 80,
-  w: 192,
-  h: 192,
-  text: ""
-});
-const sign = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 40,
-  y: 100,
-  w: 192,
-  h: 192,
-  text: ""
-});
-const sex = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 40,
-  y: 120,
-  w: 192,
-  h: 192,
-  text: ""
-});
-const coin = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 40,
-  y: 160,
-  w: 192,
-  h: 192,
-  text: ""
-});
-const fans = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 40,
-  y: 180,
-  w: 192,
-  h: 192,
-  text: ""
-});
-const friend = hmUI.createWidget(hmUI.widget.TEXT, { 
-  x: 40,
-  y: 200,
-  w: 192,
-  h: 192,
-  text: ""
-});
-const level = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 40,
-  y: 220,
-  w: 192,
-  h: 192,
-  text: ""
-});
+let midResult = localStorage.getItem("DedeUserID")
+let uname,uid,sign,sex,coin,fans,friend,level
 Page(
   BasePage({
     build() {
-      this.getMid()
+      hmUI.createWidget(hmUI.widget.IMG, {
+        x: 150,
+        y: 50,
+        src: "back.png",
+      }).addEventListener(hmUI.event.CLICK_UP, () => {
+        
+      })
+      const title = hmUI.createWidget(hmUI.widget.TEXT, {
+        x: 180,
+        y: 40,
+        w: px(245),
+        h: px(88),
+        text_size: 32,
+        text: "我的",
+        color: 0xffffff,
+        text_style: hmUI.text_style.WRAP,
+      })
+      title.addEventListener(hmUI.event.CLICK_UP, () => {
+        
+      })
+      uname = hmUI.createWidget(hmUI.widget.TEXT, {
+        x: 40,
+        y: 60,
+        w: 192,
+        h: 192,
+        text: ""
+      });
+      uid = hmUI.createWidget(hmUI.widget.TEXT, {
+        x: 40,
+        y: 80,
+        w: 192,
+        h: 192,
+        text: ""
+      });
+      sign = hmUI.createWidget(hmUI.widget.TEXT, {
+        x: 40,
+        y: 100,
+        w: 192,
+        h: 192,
+        text: ""
+      });
+      sex = hmUI.createWidget(hmUI.widget.TEXT, {
+        x: 40,
+        y: 120,
+        w: 192,
+        h: 192,
+        text: ""
+      });
+      coin = hmUI.createWidget(hmUI.widget.TEXT, {
+        x: 40,
+        y: 160,
+        w: 192,
+        h: 192,
+        text: ""
+      });
+      fans = hmUI.createWidget(hmUI.widget.TEXT, {
+        x: 40,
+        y: 180,
+        w: 192,
+        h: 192,
+        text: ""
+      });
+      friend = hmUI.createWidget(hmUI.widget.TEXT, { 
+        x: 40,
+        y: 200,
+        w: 192,
+        h: 192,
+        text: ""
+      });
+      level = hmUI.createWidget(hmUI.widget.TEXT, {
+        x: 40,
+        y: 220,
+        w: 192,
+        h: 192,
+        text: ""
+      });
       hmUI.createWidget(hmUI.widget.BUTTON, {
         x: 60,
         y: 360,
@@ -80,29 +100,10 @@ Page(
           })
         },
       });
-    },
-    getMid() {
-      this.request({
-          method: "SENDBILIGET",
-          data: {
-            DedeUserID: localStorage.getItem("DedeUserID"),
-            SESSDATA: localStorage.getItem("SESSDATA"),
-            bili_jct: localStorage.getItem("bili_jct"),
-            DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-            buvid3: localStorage.getItem("buvid3"),
-          },
-          url: "https://api.bilibili.com/x/member/web/account",
-          type: "json"
-        })
-          .then((res) => {
-          })
-          .catch((res) => {
-            console.log(res.body.data.mid.toString());
-            midResult = res.body.data.mid
-         this.getAccount() 
+      this.getAccount()
 
-          });
-  },
+    },
+// 弃用代码
 //   getAccount() {
 //     this.request({
 //         method: "SENDWBIGET",

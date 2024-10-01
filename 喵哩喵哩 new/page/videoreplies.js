@@ -95,14 +95,14 @@ Page(
     getVideoList() {
       this.request({
         method: "SENDBILIGET",
-        data: {
+        data: { 
           DedeUserID: localStorage.getItem("DedeUserID"),
           SESSDATA: localStorage.getItem("SESSDATA"),
           bili_jct: localStorage.getItem("bili_jct"),
           DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
           buvid3: localStorage.getItem("buvid3"),
         },
-        url: `https://api.bilibili.com/x/v2/reply?type=1&oid=${params.id}&sort=1&ps=1&pn=${cishu}`,
+        url: `https://api.bilibili.com/x/v2/reply?type=1&oid=${params.id}&sort=1&ps=5&pn=${cishu}`,
         type: "json"
       })
         .then((res) => {
@@ -110,7 +110,7 @@ Page(
         .catch((res) => {
           let yOffset = 90; // 初始Y偏移量
 
-          for (let i = 0; i < 1; i++) {
+          for (let i = 0; i < 5; i++) {
             logStringInChunks(res.body)
             const uname = res.body.data.replies[i].member.uname;
             const message = res.body.data.replies[i].content.message;

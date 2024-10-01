@@ -96,10 +96,7 @@ Page(
         url: `https://api.vc.bilibili.com/session_svr/v1/session_svr/get_sessions?talker_id=1&session_type=1`,
         type: "json"
       })
-        .then((res) => {
-          console.log("then");
-          
-        })
+        .then((res) => {})
         .catch((res) => {
           let sessions = res.body.data.session_list
           var session_uids = []
@@ -112,8 +109,6 @@ Page(
             }
           })
           for (let i = 0; i < sessions.length; i++) {
-            console.log(parseJsonContent(sessions[i].last_msg.content));
-            
             textList[i].setProperty(hmUI.prop.TEXT, parseJsonContent(sessions[i].last_msg.content) || "暂无消息")
             rectList[i].addEventListener(hmUI.event.CLICK_DOWN,() => {
               push({
@@ -148,12 +143,7 @@ Page(
             buvid3: localStorage.getItem("buvid3"),
           },
       })
-      .then((res) => {
-        for (let i = 0; i < res.body.data.length; i++) {
-          console.log(res.body.data[uids[i]].name);
-          nameList[i].setProperty(hmUI.prop.TEXT, res.body.data[uids[i]].name)
-        }
-      })
+      .then((res) => {})
       .catch((res) => {
         for (let i = 0; i < 20; i++) {
           console.log(res.body.data[uids[i]].name);

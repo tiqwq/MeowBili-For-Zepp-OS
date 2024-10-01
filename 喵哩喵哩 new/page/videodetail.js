@@ -34,88 +34,14 @@ function formatNumber(num){
   }
 }
 let params;
-hmUI.createWidget(hmUI.widget.FILL_RECT, {
-  x: 30,
-  y: 463,
-  w: 420,
-  h: 127,
-  radius: 40,
-  color: 0x222222
-})
-const fensi = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 145,
-  y: 533,
-  w: 294,
-  h: px(40),
-  text_size: 22,
-  text: '未知',
-  color: 0xffffff,
-  text_style: hmUI.text_style.ELLIPSIS,
-})
-const zan = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 32,
-  y: 735,
-  w: 294,
-  h: px(40),
-  text_size: 22,
-  text: '未知',
-  color: 0x9E9E9E,
-  text_style: hmUI.text_style.ELLIPSIS,
-})
-const now = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 32,
-  y: 763,
-  w: 294,
-  h: px(40),
-  text_size: 22,
-  text: '未知',
-  color: 0x9E9E9E,
 
-  text_style: hmUI.text_style.ELLIPSIS,
-})
-const view = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 32,
-  y: 792,
-  w: 294,
-  h: px(40),
-  text_size: 22,
-  text: '未知',
-  color: 0x9E9E9E,
-
-  text_style: hmUI.text_style.ELLIPSIS,
-})
-const time = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 32,
-  y: 818,
-  w: 294,
-  h: px(40),
-  text_size: 22,
-  text: '发布于 ',
-  color: 0x9E9E9E,
-
-  text_style: hmUI.text_style.ELLIPSIS,
-})
-const bv = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 32,
-  y: 844,
-  w: 294,
-  h: px(40),
-  text_size: 22,
-  text: 'BV',
-  color: 0x9E9E9E,
-
-  text_style: hmUI.text_style.ELLIPSIS,
-})
-const uname = hmUI.createWidget(hmUI.widget.TEXT, {
-  x: 145,
-  y: 487,
-  w: 294,
-  h: px(40),
-  text_size: 20,
-  text: "未知",
-  color: 0xffffff,
-  text_style: hmUI.text_style.ELLIPSIS,
-})
+let fensi;
+let zan;
+let now;
+let view;
+let time;
+let bv;
+let uname;
 // hmUI.createWidget(hmUI.widget.IMG, {
 //   x: 0,
 //   y: 0,
@@ -152,9 +78,15 @@ Page(
         });
     },
     build() {
-      this.getCid(params.bv)
+      hmUI.createWidget(hmUI.widget.FILL_RECT, {
+        x: 30,
+        y: 463,
+        w: 420,
+        h: 127,
+        radius: 40,
+        color: 0x222222
+      })
 
-          this.getVideoList();
           hmUI.createWidget(hmUI.widget.IMG, {
             x: 150,
             y: 50,
@@ -217,6 +149,80 @@ Page(
               })
             })
           }) */
+            fensi = hmUI.createWidget(hmUI.widget.TEXT, {
+              x: 145,
+              y: 533,
+              w: 294,
+              h: px(40),
+              text_size: 22,
+              text: '未知',
+              color: 0xffffff,
+              text_style: hmUI.text_style.ELLIPSIS,
+            })
+            zan = hmUI.createWidget(hmUI.widget.TEXT, {
+              x: 32,
+              y: 735,
+              w: 294,
+              h: px(40),
+              text_size: 22,
+              text: '未知',
+              color: 0x9E9E9E,
+              text_style: hmUI.text_style.ELLIPSIS,
+            })
+            now = hmUI.createWidget(hmUI.widget.TEXT, {
+              x: 32,
+              y: 763,
+              w: 294,
+              h: px(40),
+              text_size: 22,
+              text: '未知',
+              color: 0x9E9E9E,
+            
+              text_style: hmUI.text_style.ELLIPSIS,
+            })
+            view = hmUI.createWidget(hmUI.widget.TEXT, {
+              x: 32,
+              y: 792,
+              w: 294,
+              h: px(40),
+              text_size: 22,
+              text: '未知',
+              color: 0x9E9E9E,
+            
+              text_style: hmUI.text_style.ELLIPSIS,
+            })
+            time = hmUI.createWidget(hmUI.widget.TEXT, {
+              x: 32,
+              y: 818,
+              w: 294,
+              h: px(40),
+              text_size: 22,
+              text: '发布于 ',
+              color: 0x9E9E9E,
+            
+              text_style: hmUI.text_style.ELLIPSIS,
+            })
+            bv = hmUI.createWidget(hmUI.widget.TEXT, {
+              x: 32,
+              y: 844,
+              w: 294,
+              h: px(40),
+              text_size: 22,
+              text: 'BV',
+              color: 0x9E9E9E,
+            
+              text_style: hmUI.text_style.ELLIPSIS,
+            })
+            uname = hmUI.createWidget(hmUI.widget.TEXT, {
+              x: 145,
+              y: 487,
+              w: 294,
+              h: px(40),
+              text_size: 20,
+              text: "未知",
+              color: 0xffffff,
+              text_style: hmUI.text_style.ELLIPSIS,
+            })
           hmUI.createWidget(hmUI.widget.BUTTON, {
             x: 60,
             y: 1010,
@@ -273,6 +279,27 @@ Page(
             x: 191,
             y: 628,
             src: "bi.png",
+          }).addEventListener(hmUI.event.CLICK_DOWN, () => {
+            this.request({
+              method: "SENDBILIPOST",
+              data: {
+                DedeUserID: localStorage.getItem("DedeUserID"),
+                SESSDATA: localStorage.getItem("SESSDATA"),
+                bili_jct: localStorage.getItem("bili_jct"),
+                DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
+                buvid3: localStorage.getItem("buvid3"),
+              }, 
+              content_type: "application/x-www-form-urlencoded",
+              parameters: `bvid=${params.bv}&like=1&csrf=${localStorage.getItem("bili_jct")}`,
+              url: `https://api.bilibili.com/x/web-interface/coin/add?bvid=${params.bv}&multiply=1&csrf=${localStorage.getItem("bili_jct")}`,
+              type: "json"
+            })
+              .then((res) => {
+                
+              })
+              .catch((res) => {
+                
+              });
           })
 
           hmUI.createWidget(hmUI.widget.IMG, {
@@ -413,6 +440,9 @@ Page(
           //     })
           //   },
           // });
+          this.getCid(params.bv)
+
+          this.getVideoList();
     },
     
     getVideoList() {

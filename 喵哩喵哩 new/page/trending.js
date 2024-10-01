@@ -18,20 +18,21 @@ function decodeUnicodeEscape(data) {
   return data;
 }
 let buttonList = []
-for(let i = 0; i < 10; i++) {
-  buttonList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
-    x: 50,
-    y: 100 + i * 32,
-    w: 420,
-    h: 180,
-    text_size: 22,
-    text: "",
-    color: 0xffffff,
-  })
-}
+
 Page(
   BasePage({
     build() {
+      for(let i = 0; i < 10; i++) {
+        buttonList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
+          x: 50,
+          y: 100 + i * 32,
+          w: 420,
+          h: 180,
+          text_size: 22,
+          text: "",
+          color: 0xffffff,
+        })
+      }
          this.getWbi() 
         //  const th = this
         //  hmUI.createWidget(hmUI.widget.BUTTON, {
