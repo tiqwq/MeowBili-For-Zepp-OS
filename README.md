@@ -1,7 +1,7 @@
 # MeowBili-For-Zepp-OS
-A third party BiliBili for Amazfit Zepp OS3.0
-Support only for Zepp OS3.0 and above
-Developers：struggle，易QWQ
+A third party BiliBili for Amazfit Zepp OS
+Zepp OS 1.0 version cannot use most of the functions, Zepp OS 2.0 version is waiting for update, and Zepp OS 3.0 version is the best supported version currently.
+Developers：Struggle，易QWQ
 
 
 # 声明
