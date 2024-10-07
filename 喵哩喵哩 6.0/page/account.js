@@ -137,6 +137,22 @@ Page(
         radius: 50,
         normal_color: 0x222222,
         press_color: 0x101010,
+        text: "稍后再看",
+        click_func: (button_widget) => {
+          push({
+            url: 'page/laterSee'
+          })
+        },
+      });
+      hmUI.createWidget(hmUI.widget.BUTTON, {
+        x: 60,
+        y: 721,
+        w: px(360),
+        h: px(100),
+        text_size: px(36),
+        radius: 50,
+        normal_color: 0x222222,
+        press_color: 0x101010,
         text: "收藏夹",
         click_func: (button_widget) => {
           push({
@@ -146,7 +162,7 @@ Page(
       });
       hmUI.createWidget(hmUI.widget.BUTTON, {
         x: 60,
-        y: 721,
+        y: 828,
         w: px(360),
         h: px(100),
         text_size: px(36),

@@ -58,7 +58,7 @@ Page(
         text_style: hmUI.text_style.WRAP,
       })   
       //-----------------------------------------------------------------------
- this.state.currentVersionicon = hmUI.createWidget(hmUI.widget.IMG, {
+      this.state.currentVersionicon = hmUI.createWidget(hmUI.widget.IMG, {
         x: 80,
         y: 120,
         src: '',

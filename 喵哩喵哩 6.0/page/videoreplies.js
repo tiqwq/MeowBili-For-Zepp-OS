@@ -21,9 +21,6 @@ let buttonList = []
 
 let cishu = 1;
 
-
-
-
 function formatNumber(num) {
   if (num < 1000) {
       return num.toString();
@@ -56,7 +53,6 @@ Page(
         press_color: 0x101010,
         text: "上一页",
         click_func: (button_widget) => {
-          logger.log("click button");
           cishu--;
           this.getVideoList();
         },
@@ -72,7 +68,6 @@ Page(
         press_color: 0x101010,
         text: "下一页",
         click_func: (button_widget) => {
-          logger.log("click button");
           cishu++;
           this.getVideoList();
         },
