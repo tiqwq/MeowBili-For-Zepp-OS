@@ -44,6 +44,7 @@
             "page/board",
             "page/columns",
             "page/update",
+            "page/laterSee",
             "page/setting",
             "page/history",
             "page/starFolder",

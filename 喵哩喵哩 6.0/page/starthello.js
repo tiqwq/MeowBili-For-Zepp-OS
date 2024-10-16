@@ -1,12 +1,11 @@
 // 系统api导入
-import * as hmUI from "@zos/ui";
-import { createWidget, widget, align, prop, text_style, event } from '@zos/ui'
+import { createWidget, widget, align, prop, text_style, event, getTextLayout } from '@zos/ui';
 import { scrollTo } from '@zos/page'
 import { push } from '@zos/router'
 
 Page({
     build() {
-        const fill_rect = hmUI.createWidget(hmUI.widget.FILL_RECT, {
+        const fill_rect = createWidget(widget.FILL_RECT, {
         x: 0,
         y: 0,
         w: 370,
@@ -15,7 +14,7 @@ Page({
         color: 0xff93c4
       })
       fill_rect.setAlpha(90)
-      hmUI.createWidget(hmUI.widget.FILL_RECT, {
+      createWidget(widget.FILL_RECT, {
         x: 0,
         y: 0,
         w: 480,
@@ -23,39 +22,38 @@ Page({
         radius: 180,
         color: 0xffffff
       }).setAlpha(40)
-      const text = hmUI.createWidget(hmUI.widget.TEXT, {
+      const text = createWidget(widget.TEXT, {
         x: 50,
         y: 60,
         w: 380,
         h: 300,
         color: 0xffffff,
         text_size: 36,
-        align_h: hmUI.align.CENTER_H,
-        align_v: hmUI.align.CENTER_V,
-        text_style: hmUI.text_style.NONE,
+        align_h: align.CENTER_H,
+        align_v: align.CENTER_V,
+        text_style: text_style.NONE,
         text: 'HELLO ZeppMeowBili\n设计\n“焕然一新”'
       })
   
-      hmUI.createWidget(hmUI.widget.TEXT, {
+      createWidget(widget.TEXT, {
         x: 50,
         y: 290,
         w: 380,
         h: 100,
         color: 0xff93c4,
         text_size: 30,
-        align_h: hmUI.align.CENTER_H,
-        align_v: hmUI.align.CENTER_V,
-        text_style: hmUI.text_style.NONE,
+        align_h: align.CENTER_H,
+        align_v: align.CENTER_V,
+        text_style: text_style.NONE,
         text: '让我们开始熟悉一下\n使用方式吧'
       })
 
     
            createWidget(widget.BUTTON, {
             x: 180,
-        y: 390,
-        w: 120,
-        h: 70,
-            
+            y: 390,
+            w: 120,
+            h: 70,
             normal_color: 0xff699b,
             press_color: 0xcc547b,
             text: 'NEXT',

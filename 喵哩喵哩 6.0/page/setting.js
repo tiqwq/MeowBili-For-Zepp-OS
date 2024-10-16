@@ -1,4 +1,4 @@
-import * as hmUI from "@zos/ui"
+import { createWidget, widget, align, prop, text_style, event, getTextLayout } from '@zos/ui';
 import { BasePage } from "@zeppos/zml/base-page"
 import { LocalStorage } from '@zos/storage'
 import { push } from '@zos/router'
@@ -7,14 +7,14 @@ const localStorage = new LocalStorage()
 Page(
   BasePage({
     build() {
-      hmUI.createWidget(hmUI.widget.IMG, {
+      createWidget(widget.IMG, {
         x: 182,
         y: 34,
         src: "back.png",
-      }).addEventListener(hmUI.event.CLICK_UP, () => {
-        
+      }).addEventListener(event.CLICK_UP, () => {
+        back()
       })
-      const title = hmUI.createWidget(hmUI.widget.TEXT, {
+      const title = createWidget(widget.TEXT, {
         x: 215,
         y: 22,
         w: px(245),
@@ -22,9 +22,9 @@ Page(
         text_size: 32,
         text: "设置",
         color: 0xffffff,
-        text_style: hmUI.text_style.WRAP,
+        text_style: text_style.WRAP,
       })
-      hmUI.createWidget(hmUI.widget.BUTTON, {
+      createWidget(widget.BUTTON, {
         x: 60,
         y: 80,
         w: px(360),
@@ -40,7 +40,7 @@ Page(
           })
         }
       })
-      hmUI.createWidget(hmUI.widget.BUTTON, {
+      createWidget(widget.BUTTON, {
         x: 60,
         y: 187,
         w: px(360),
@@ -56,7 +56,7 @@ Page(
           })
         }
       })
-      hmUI.createWidget(hmUI.widget.BUTTON, {
+      createWidget(widget.BUTTON, {
         x: 60,
         y: 294,
         w: px(360),

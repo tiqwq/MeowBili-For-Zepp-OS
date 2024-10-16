@@ -112,7 +112,7 @@ AppSideService(
         case "DOWNLOADIMAGE": downloadImage(url, filename, targetName); break;
         case "SENDBILIPOST": sendBiliRequest(res, 'POST', url, data, type, content_type, parameters); break;
         case "SENDWBIPOST": sendWbiRequest(res, 'POST', url, data, type, paramsobj, info); break;
-        case "GETCOLUMNS": fetch(`https://www.bilibili.com/read/cv${id}/`).then(response => response.text()).then(html => res(parseHTMLToJSON(html))); break;
+        case "GETCOLUMNS": fetch(`https://www.bilibili.com/read/cv${id}/`).then(response => response.text()).then(html => res(null,parseHTMLToJSON(html))); break;
         case "UPDATECHECK": updateCheck(res); break;
         case "GETSUGGESTVIDEO": getSuggestVideo(res); break;
         case "GETBULLETIN": getBulletin(res); break;

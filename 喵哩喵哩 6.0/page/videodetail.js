@@ -1,468 +1,353 @@
-import * as hmUI from "@zos/ui";
-import { log as Logger } from "@zos/utils";
+import { createWidget, widget, align, prop, text_style, event, getTextLayout } from '@zos/ui';
 import { BasePage } from "@zeppos/zml/base-page";
 import { px } from "@zos/utils";
-import { push } from '@zos/router'
-const logger = Logger.getLogger("fetch_api");
-import { LocalStorage } from '@zos/storage'
-const localStorage = new LocalStorage()
-function extractTextFromHTML(htmlString) {
-  const text = htmlString.replace(/<[^>]*>/g, '');
-  return text.trim();
-}
-function timestampToDateTime(timestamp) {
-  let date = new Date(timestamp * 1000)
-  let year = date.getFullYear()
-  let month = ('0' + (date.getMonth() + 1)).slice(-2)//月份从0开始需加1补零
-  let day = ('0' + date.getDate()).slice(-2)//补零
-  let hours = ('0' + date.getHours()).slice(-2)//补零
-  let minutes = ('0' + date.getMinutes()).slice(-2)//补零
-  let seconds = ('0' + date.getSeconds()).slice(-2)//补零
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+import { push } from '@zos/router';
+import { starVideo, likeVideo, coinVideo, getAllFolder, getVideoDetail, getUpAccount, getCid, getPlayerNum } from "../func/fetch";
+import { timestampToDateTime, extractTextFromHTML, formatNumber } from "../utils/utils";
+import { showToast } from '@zos/interaction';
+
+class VideoDetailPage {
+  constructor(page) {
+    this.page = page;
+    this.params = null;
+    this.cid = null;
+    this.aid = null;
+    this.widgets = {};
+  }
+
+  onInit(param) {
+    this.params = JSON.parse(param);
+    console.log(param);
+  }
+
+  starFunc(folderId) {
+    starVideo(this.page, folderId, this.params.id).then((res) => {
+      if (res.body.code == 0) {
+        showToast({
+          content: "收藏成功"
+        });
+      } else {
+        showToast({
+          content: "收藏失败，错误码：" + res.body.code
+        });
+      }
+    });
+  }
+
+  build() {
+    this.createWidgets();
+    this.createButtons();
+    this.getVideoDetail();
+  }
+
+  createWidgets() {
+    createWidget(widget.FILL_RECT, {
+      x: 30,
+      y: 463,
+      w: 420,
+      h: 127,
+      radius: 40,
+      color: 0x222222
+    });
+
+    createWidget(widget.IMG, {
+      x: 150,
+      y: 50,
+      src: "back.png",
+    }).addEventListener(event.CLICK_UP, () => {
+      back();
+    });
+
+    createWidget(widget.TEXT, {
+      x: 180,
+      y: 40,
+      w: px(245),
+      h: px(88),
+      text_size: 32,
+      text: "视频详情",
+      color: 0xffffff,
+      text_style: text_style.WRAP,
+    });
+
+    createWidget(widget.IMG, {
+      x: 80,
+      y: 100,
+      src: "spfm.png",
+    });
+
+    createWidget(widget.TEXT, {
+      x: 20,
+      y: 370,
+      w: 430,
+      h: px(88),
+      text_size: 30,
+      text: extractTextFromHTML(this.params.vid_title),
+      color: 0xffffff,
+      align_h: align.CENTER_H,
+      text_style: text_style.WRAP,
+    });
+
+    this.widgets.fensi = createWidget(widget.TEXT, {
+      x: 145,
+      y: 533,
+      w: 294,
+      h: px(40),
+      text_size: 22,
+      text: '未知',
+      color: 0xffffff,
+      text_style: text_style.ELLIPSIS,
+    });
+
+    this.widgets.zan = createWidget(widget.TEXT, {
+      x: 32,
+      y: 735,
+      w: 294,
+      h: px(40),
+      text_size: 22,
+      text: '未知',
+      color: 0x9E9E9E,
+      text_style: text_style.ELLIPSIS,
+    });
+
+    this.widgets.now = createWidget(widget.TEXT, {
+      x: 32,
+      y: 763,
+      w: 294,
+      h: px(40),
+      text_size: 22,
+      text: '未知',
+      color: 0x9E9E9E,
+      text_style: text_style.ELLIPSIS,
+    });
+
+    this.widgets.view = createWidget(widget.TEXT, {
+      x: 32,
+      y: 792,
+      w: 294,
+      h: px(40),
+      text_size: 22,
+      text: '未知',
+      color: 0x9E9E9E,
+      text_style: text_style.ELLIPSIS,
+    });
+
+    this.widgets.time = createWidget(widget.TEXT, {
+      x: 32,
+      y: 818,
+      w: 294,
+      h: px(40),
+      text_size: 22,
+      text: '发布于 ',
+      color: 0x9E9E9E,
+      text_style: text_style.ELLIPSIS,
+    });
+
+    this.widgets.bv = createWidget(widget.TEXT, {
+      x: 32,
+      y: 844,
+      w: 294,
+      h: px(40),
+      text_size: 22,
+      text: 'BV',
+      color: 0x9E9E9E,
+      text_style: text_style.ELLIPSIS,
+    });
+
+    this.widgets.uname = createWidget(widget.TEXT, {
+      x: 145,
+      y: 487,
+      w: 294,
+      h: px(40),
+      text_size: 20,
+      text: "未知",
+      color: 0xffffff,
+      text_style: text_style.ELLIPSIS,
+    });
+  }
+
+  createButtons() {
+    createWidget(widget.IMG, {
+      x: 46,
+      y: 628,
+      src: "zan.png",
+    }).addEventListener(event.CLICK_UP, () => {
+      likeVideo(this.page, this.params.bv).then((res) => {
+        if (res.body.code == 0) {
+          showToast({
+            content: "点赞成功"
+          });
+        } else {
+          showToast({
+            content: "点赞失败，报错信息：" + res.body.message
+          });
+        }
+      });
+    });
+
+    createWidget(widget.IMG, {
+      x: 191,
+      y: 628,
+      src: "bi.png",
+    }).addEventListener(event.CLICK_UP, () => {
+      coinVideo(this.page, this.params.bv).then((res) => {
+        if (res.body.code == 0) {
+          showToast({
+            content: "投币成功"
+          });
+        } else {
+          showToast({
+            content: "投币失败，报错信息：" + res.body.message
+          });
+        }
+      });
+    });
+
+    createWidget(widget.IMG, {
+      x: 341,
+      y: 628,
+      src: "star.png",
+    }).addEventListener(event.CLICK_UP, () => {
+      getAllFolder(this.page).then((res) => {
+        res.body.data.list.forEach(folder => {
+          if (folder.title === "默认收藏夹") {
+            this.starFunc(folder.id);
+          }
+        });
+      });
+    });
+    
+    createWidget(widget.BUTTON, {
+      x: 60,
+      y: 1010,
+      w: px(360),
+      h: px(100),
+      text_size: px(36),
+      radius: 30,
+      normal_color: 0x222222,
+      press_color: 0x101010,
+      text: "Ai视频总结",
+      click_func: () => {
+        push({
+          url: "page/videoaisummary",
+          params: JSON.stringify({
+            img_src: this.params.img_src,
+            vid_title: this.params.vid_title,
+            bv: this.params.bv,
+            cid: this.cid,
+            up_mid: this.params.up_mid,
+            id: this.params.id
+          })
+        });
+      },
+    });
+    
+    createWidget(widget.BUTTON, {
+      x: 60,
+      y: 900,
+      w: px(360),
+      h: px(100),
+      text_size: px(36),
+      radius: 30,
+      normal_color: 0x222222,
+      press_color: 0x101010,
+      text: "评论区",
+      click_func: () => {
+        push({
+          url: "page/videoreplies",
+          params: JSON.stringify({
+            img_src: this.params.img_src,
+            vid_title: this.params.vid_title,
+            bv: this.params.bv,
+            cid: this.params.cid,
+            up_mid: this.params.up_mid,
+            id: this.aid
+          })
+        });
+      },
+    });
+
+    createWidget(widget.BUTTON, {
+      x: 60,
+      y: 1120,
+      w: px(360),
+      h: px(100),
+      text_size: px(36),
+      radius: 30,
+      normal_color: 0x222222,
+      press_color: 0x101010,
+      text: "发评论",
+      click_func: () => {
+        push({
+          url: "page/board",
+          params: JSON.stringify({
+            type: "sendreply",
+            id: this.params.id
+          })
+        });
+      },
+    });
+
+    createWidget(widget.BUTTON, {
+      x: 60,
+      y: 1230,
+      w: px(360),
+      h: px(100),
+      text_size: px(36),
+      radius: 30,
+      normal_color: 0x222222,
+      press_color: 0x101010,
+      text: "发弹幕",
+      click_func: () => {
+        push({
+          url: "page/board",
+          params: JSON.stringify({
+            type: "senddm",
+            cid: this.cid,
+            id: this.params.id
+          })
+        });
+      },
+    });
+  }
+
+  getVideoDetail() {
+    getVideoDetail(this.page, this.params.bv).then((res) => {
+      this.widgets.zan.setProperty(prop.TEXT, formatNumber(res.body.data.stat.like, 'text').toString() + '点赞');
+      this.widgets.view.setProperty(prop.TEXT, formatNumber(res.body.data.stat.view, 'text').toString() + '播放');
+      this.widgets.time.setProperty(prop.TEXT, '发布于 ' + timestampToDateTime(res.body.data.pubdate));
+      this.widgets.uname.setProperty(prop.TEXT, res.body.data.owner.name);
+      this.aid = res.body.data.aid;
+      if (this.params.id == "undefined") {
+        this.params.id = res.body.data.aid;
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+
+    getUpAccount(this.page, this.params.up_mid).then((res) => {
+      this.widgets.fensi.setProperty(prop.TEXT, formatNumber(res.body.data.card.fans, 'text').toString() + '粉丝');
+      this.widgets.bv.setProperty(prop.TEXT, this.params.bv);
+    });
+
+    this.getCid(this.params.bv);
+  }
+
+  getCid(bvid) {
+    getCid(this.page, bvid).then((res) => {
+      this.cid = res.body.data[0].cid;
+      getPlayerNum(this.page, bvid, this.cid).then((res) => {
+        this.widgets.now.setProperty(prop.TEXT, formatNumber(res.body.data.count, 'text').toString() + ' 人在看');
+      });
+    });
+  }
 }
 
-let cid
-function formatNumber(num){
-  if(num < 1000){
-      return num.toString();
-  }
-  else if(num < 10000){
-      return (num/1000).toFixed(1) + '千';
-  }
-  else{
-      return (num / 10000).toFixed(1) + '万'
-  }
-}
-let params;
-let aid
-let fensi;
-let zan;
-let now;
-let view;
-let time;
-let bv;
-let uname;
-// hmUI.createWidget(hmUI.widget.IMG, {
-//   x: 0,
-//   y: 0,
-//   w: px(480),
-//   h: px(480),
-//   src: "data://download/1.png",
-// })
 Page(
   BasePage({
     onInit(param) {
-      params = JSON.parse(param)
-      console.log(param);
-    },
-    starFunc(folderId) {
-      this.request({
-        method: "SENDBILIPOST",
-        data: {
-          DedeUserID: localStorage.getItem("DedeUserID"),
-          SESSDATA: localStorage.getItem("SESSDATA"),
-          bili_jct: localStorage.getItem("bili_jct"),
-          DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-          buvid3: localStorage.getItem("buvid3"),
-        }, 
-        content_type: "application/x-www-form-urlencoded",
-        parameters: `bvid=${params.bv}&like=1&csrf=${localStorage.getItem("bili_jct")}`,
-        url: `https://api.bilibili.com/x/v3/fav/resource/deal?rid=${params.id}&type=2&csrf=${localStorage.getItem("bili_jct")}&add_media_ids=${folderId}`,
-        type: "json"
-      })
-        .then((res) => {
-          
-        })
-        .catch((res) => {
-          
-        });
-    },
-    build() {
-      hmUI.createWidget(hmUI.widget.FILL_RECT, {
-        x: 30,
-        y: 463,
-        w: 420,
-        h: 127,
-        radius: 40,
-        color: 0x222222
-      })
-
-          hmUI.createWidget(hmUI.widget.IMG, {
-            x: 150,
-            y: 50,
-            src: "back.png",
-          }).addEventListener(hmUI.event.CLICK_UP, () => {
-            back()
-          });
-          const back = hmUI.createWidget(hmUI.widget.TEXT, {
-            x: 180,
-            y: 40,
-            w: px(245),
-            h: px(88),
-            text_size: 32,
-            text: "视频详情",
-            color: 0xffffff,
-            text_style: hmUI.text_style.WRAP,
-          }) // title
-          back.addEventListener(hmUI.event.CLICK_DOWN, (info) => {
-            push({
-              url: 'page/videopush',
-            })
-          })
-            hmUI.createWidget(hmUI.widget.IMG, { 
-              x: 80,
-              y: 100,
-              src: "spfm.png",
-            })
-          hmUI.createWidget(hmUI.widget.TEXT, {
-            x: 20,
-            y: 370,
-            w: 430,
-            h: px(88),
-            text_size: 30,
-            text: extractTextFromHTML(params.vid_title),
-            color: 0xffffff,
-            align_h: hmUI.align.CENTER_H,
-            text_style: hmUI.text_style.WRAP,
-          }) // title
-          //--------------------------------------
-            fensi = hmUI.createWidget(hmUI.widget.TEXT, {
-              x: 145,
-              y: 533,
-              w: 294,
-              h: px(40),
-              text_size: 22,
-              text: '未知',
-              color: 0xffffff,
-              text_style: hmUI.text_style.ELLIPSIS,
-            })
-            zan = hmUI.createWidget(hmUI.widget.TEXT, {
-              x: 32,
-              y: 735,
-              w: 294,
-              h: px(40),
-              text_size: 22,
-              text: '未知',
-              color: 0x9E9E9E,
-              text_style: hmUI.text_style.ELLIPSIS,
-            })
-            now = hmUI.createWidget(hmUI.widget.TEXT, {
-              x: 32,
-              y: 763,
-              w: 294,
-              h: px(40),
-              text_size: 22,
-              text: '未知',
-              color: 0x9E9E9E,
-            
-              text_style: hmUI.text_style.ELLIPSIS,
-            })
-            view = hmUI.createWidget(hmUI.widget.TEXT, {
-              x: 32,
-              y: 792,
-              w: 294,
-              h: px(40),
-              text_size: 22,
-              text: '未知',
-              color: 0x9E9E9E,
-            
-              text_style: hmUI.text_style.ELLIPSIS,
-            })
-            time = hmUI.createWidget(hmUI.widget.TEXT, {
-              x: 32,
-              y: 818,
-              w: 294,
-              h: px(40),
-              text_size: 22,
-              text: '发布于 ',
-              color: 0x9E9E9E,
-            
-              text_style: hmUI.text_style.ELLIPSIS,
-            })
-            bv = hmUI.createWidget(hmUI.widget.TEXT, {
-              x: 32,
-              y: 844,
-              w: 294,
-              h: px(40),
-              text_size: 22,
-              text: 'BV',
-              color: 0x9E9E9E,
-            
-              text_style: hmUI.text_style.ELLIPSIS,
-            })
-            uname = hmUI.createWidget(hmUI.widget.TEXT, {
-              x: 145,
-              y: 487,
-              w: 294,
-              h: px(40),
-              text_size: 20,
-              text: "未知",
-              color: 0xffffff,
-              text_style: hmUI.text_style.ELLIPSIS,
-            })
-          hmUI.createWidget(hmUI.widget.BUTTON, {
-            x: 60,
-            y: 1010,
-            w: px(360),
-            h: px(100),
-            text_size: px(36),
-            radius: 30,
-            normal_color: 0x222222,
-            press_color: 0x101010,
-            text: "Ai视频总结",
-            click_func: (button_widget) => {
-              push({
-                url: "page/videoaisummary",
-                params: JSON.stringify({
-                  img_src: params.img_src,
-                  vid_title: params.vid_title,
-                  bv: params.bv,
-                  cid: cid,
-                  up_mid: params.up_mid,
-                 id: params.id
-                })
-              })
-            },
-          });
-//--------------------------------
-          hmUI.createWidget(hmUI.widget.IMG, {
-            x: 46,
-            y: 628,
-            src: "zan.png",
-          }).addEventListener(hmUI.event.CLICK_DOWN, () => {
-            this.request({
-              method: "SENDBILIPOST",
-              data: {
-                DedeUserID: localStorage.getItem("DedeUserID"),
-                SESSDATA: localStorage.getItem("SESSDATA"),
-                bili_jct: localStorage.getItem("bili_jct"),
-                DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-                buvid3: localStorage.getItem("buvid3"),
-              }, 
-              content_type: "application/x-www-form-urlencoded",
-              parameters: `bvid=${params.bv}&like=1&csrf=${localStorage.getItem("bili_jct")}`,
-              url: `https://api.bilibili.com/x/web-interface/archive/like?bvid=${params.bv}&like=1&csrf=${localStorage.getItem("bili_jct")}`,
-              type: "json"
-            })
-              .then((res) => {
-                
-              })
-              .catch((res) => {
-                
-              });
-          })
-    
-          hmUI.createWidget(hmUI.widget.IMG, {
-            x: 191,
-            y: 628,
-            src: "bi.png",
-          }).addEventListener(hmUI.event.CLICK_DOWN, () => {
-            this.request({
-              method: "SENDBILIPOST",
-              data: {
-                DedeUserID: localStorage.getItem("DedeUserID"),
-                SESSDATA: localStorage.getItem("SESSDATA"),
-                bili_jct: localStorage.getItem("bili_jct"),
-                DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-                buvid3: localStorage.getItem("buvid3"),
-              }, 
-              content_type: "application/x-www-form-urlencoded",
-              parameters: `bvid=${params.bv}&like=1&csrf=${localStorage.getItem("bili_jct")}`,
-              url: `https://api.bilibili.com/x/web-interface/coin/add?bvid=${params.bv}&multiply=1&csrf=${localStorage.getItem("bili_jct")}`,
-              type: "json"
-            })
-              .then((res) => {
-                
-              })
-              .catch((res) => {
-                
-              });
-          })
-
-          hmUI.createWidget(hmUI.widget.IMG, {
-            x: 341,
-            y: 628,
-            src: "star.png",
-          }).addEventListener(hmUI.event.CLICK_DOWN, () => {
-            this.request({
-              method: "SENDBILIGET",
-              data: {
-                DedeUserID: localStorage.getItem("DedeUserID"),
-                SESSDATA: localStorage.getItem("SESSDATA"),
-                bili_jct: localStorage.getItem("bili_jct"),
-                DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-                buvid3: localStorage.getItem("buvid3"),
-              }, 
-              content_type: "application/x-www-form-urlencoded",
-              parameters: `bvid=${params.bv}&like=1&csrf=${localStorage.getItem("bili_jct")}`,
-              url: `https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=${localStorage.getItem("DedeUserID")}&type=0`,
-              type: "json"
-            })
-              .then((res) => {
-                res.body.data.list.forEach(folder => {
-                  if (folder.title === "默认收藏夹") {
-                      this.starFunc(folder.id)
-                  }
-              });
-              })
-              .catch((res) => {
-
-              });
-          })
-          hmUI.createWidget(hmUI.widget.BUTTON, {
-            x: 60,
-            y: 900,
-            w: px(360),
-            h: px(100),
-            text_size: px(36),
-            radius: 30,
-            normal_color: 0x222222,
-            press_color: 0x101010,
-            text: "评论区",
-            click_func: (button_widget) => {
-              push({
-                url: "page/videoreplies", 
-                params: JSON.stringify({ 
-                  img_src: params.img_src,
-                  vid_title: params.vid_title,
-                  bv: params.bv,
-                  cid: params.cid,
-                  up_mid: params.up_mid,
-                  id: aid
-              })
-              })
-            },
-          });
-          hmUI.createWidget(hmUI.widget.BUTTON, {
-            x: 60,
-            y: 1120,
-            w: px(360),
-            h: px(100),
-            text_size: px(36),
-            radius: 30,
-            normal_color: 0x222222,
-            press_color: 0x101010,
-            text: "发评论",
-            click_func: (button_widget) => {
-              push({
-                url: "page/board", 
-                params: JSON.stringify({
-                  type: "sendreply",
-                  id: params.id
-              })
-              })
-            },
-          });
-          hmUI.createWidget(hmUI.widget.BUTTON, {
-            x: 60,
-            y: 1230,
-            w: px(360),
-            h: px(100),
-            text_size: px(36),
-            radius: 30,
-            normal_color: 0x222222,
-            press_color: 0x101010,
-            text: "发弹幕",
-            click_func: (button_widget) => {
-              push({
-                url: "page/board", 
-                params: JSON.stringify({
-                  type: "senddm",
-                  cid: cid,
-                  id: params.id
-              })
-              })
-            },
-          })
-          this.getVideoList();
-    },
-    
-    getVideoList() {
-      this.request({ 
-        method: "SENDBILIGET",
-        data: {
-          DedeUserID: localStorage.getItem("DedeUserID"),
-          SESSDATA: localStorage.getItem("SESSDATA"),
-          bili_jct: localStorage.getItem("bili_jct"),
-          DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-          buvid3: localStorage.getItem("buvid3"),
-        },
-        url: `https://api.bilibili.com/x/web-interface/view?bvid=${params.bv}`,
-        type: "json"
-      })
-        .then((res) => {
-          zan.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.stat.like).toString() + '点赞')
-          view.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.stat.view).toString() + '播放')
-          time.setProperty(hmUI.prop.TEXT, '发布于 ' + timestampToDateTime(res.body.data.pubdate))
-          uname.setProperty(hmUI.prop.TEXT, res.body.data.owner.name)
-          aid = res.body.data.aid
-          if (params.id == "undefined") {
-            params.id = res.body.data.aid
-          }
-        })
-        .catch((res) => {
-
-        })
-        this.request({
-          method: "SENDBILIGET",
-          data: {
-            DedeUserID: localStorage.getItem("DedeUserID"),
-            SESSDATA: localStorage.getItem("SESSDATA"),
-            bili_jct: localStorage.getItem("bili_jct"),
-            DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-            buvid3: localStorage.getItem("buvid3"),
-          },
-          url: `https://api.bilibili.com/x/web-interface/card?mid=${params.up_mid}`,
-          type: "json"
-        })
-          .then((res) => {
-            fensi.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.card.fans).toString() + '粉丝')
-            bv.setProperty(hmUI.prop.TEXT, params.bv)
-          })
-          .catch((res) => {
-
-          })
-      this.getCid(params.bv)
-
-    },
-    getCid(bvid) { 
-      this.request({
-        method: "SENDBILIGET",
-        data: {
-          DedeUserID: localStorage.getItem("DedeUserID"),
-          SESSDATA: localStorage.getItem("SESSDATA"),
-          bili_jct: localStorage.getItem("bili_jct"),
-          DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-          buvid3: localStorage.getItem("buvid3"),
-        },
-        url: "https://api.bilibili.com/x/player/pagelist?bvid=" + bvid,
-        type: "json",
-      })
-        .then((res) => {
-          console.log('cid' + res.body.data[0].cid);
-          cid = res.body.data[0].cid
-          this.request({
-            method: "SENDBILIGET",
-            data: {
-              DedeUserID: localStorage.getItem("DedeUserID"),
-              SESSDATA: localStorage.getItem("SESSDATA"),
-              bili_jct: localStorage.getItem("bili_jct"),
-              DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-              buvid3: localStorage.getItem("buvid3"),
-            },
-            url: 'https://api.bilibili.com/x/player/online/total?bvid=' + params.bv + "&cid=" + cid,
-            type: "json"
-          })
-            .then((res) => {
-              now.setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.count).toString() + ' 人在看')
-
-            })
-            .catch((res) => {
-            })
-        })
-        .catch((res) => {
-
-        });
-  }
+      const videoDetailPage = new VideoDetailPage(this);
+      videoDetailPage.onInit(param);
+      videoDetailPage.build();
+    }
   })
 );

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成公告内容</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+        }
+        .entry {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .delete-button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #FF4136;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #E40000;
+        }
+        .current-time-button {
+            margin-top: 5px;
+            padding: 5px 10px;
+            background-color: #28A745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .current-time-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>生成公告内容</h1>
+        <form id="versionForm">
+            <div id="entries"></div>
+            <button type="button" onclick="addEntry()">添加新条目</button>
+            <button type="button" onclick="generateJSON()">生成并复制</button>
+        </form>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        let entryCount = 0;
+
+        // 从本地存储加载数据
+        function loadEntries() {
+            const savedEntries = JSON.parse(localStorage.getItem('entries')) || [];
+            savedEntries.forEach(entry => {
+                addEntry(entry);
+            });
+        }
+
+        // 保存数据到本地存储
+        function saveEntries() {
+            const entries = document.querySelectorAll('.entry');
+            const savedEntries = [];
+
+            entries.forEach((entry, index) => {
+                const versionInput = entry.querySelector(`#version${index + 1}`);
+                const announcementInput = entry.querySelector(`#announcement${index + 1}`);
+                const typeInput = entry.querySelector(`#type${index + 1}`);
+                const timeInput = entry.querySelector(`#time${index + 1}`);
+
+                const version = versionInput ? versionInput.value.trim() : null;
+                const announcement = announcementInput.value.trim();
+                const type = typeInput.value.trim();
+                const time = timeInput.value.trim();
+
+                savedEntries.push({
+                    version: version,
+                    announcement: announcement,
+                    type: type,
+                    time: time
+                });
+            });
+
+            localStorage.setItem('entries', JSON.stringify(savedEntries));
+        }
+
+        // 添加新条目
+        function addEntry(entryData = null) {
+            entryCount++;
+            const newEntry = document.createElement('div');
+            newEntry.className = 'entry';
+            newEntry.innerHTML = `
+                <label for="version${entryCount}">版本号:</label>
+                <input type="text" id="version${entryCount}" name="version${entryCount}" placeholder="例如: 1.1.0">
+                <label for="announcement${entryCount}">公告内容:</label>
+                <textarea id="announcement${entryCount}" name="announcement${entryCount}" rows="4" placeholder="例如: 提高软件稳定性&#10;优化软件流畅度"></textarea>
+                <label for="type${entryCount}">类型:</label>
+                <input type="text" id="type${entryCount}" name="type${entryCount}" placeholder="例如: 版本更新">
+                <label for="time${entryCount}">时间:</label>
+                <input type="text" id="time${entryCount}" name="time${entryCount}" placeholder="例如: 2024/10/02 11:45">
+                <button type="button" class="current-time-button" onclick="setCurrentTime(this)">当前时间</button>
+                <button type="button" class="delete-button" onclick="deleteEntry(this)">删除</button>
+            `;
+
+            if (entryData) {
+                newEntry.querySelector(`#version${entryCount}`).value = entryData.version || '';
+                newEntry.querySelector(`#announcement${entryCount}`).value = entryData.announcement;
+                newEntry.querySelector(`#type${entryCount}`).value = entryData.type;
+                newEntry.querySelector(`#time${entryCount}`).value = entryData.time;
+            }
+
+            document.getElementById('entries').appendChild(newEntry);
+            saveEntries();
+        }
+
+        // 删除条目
+        function deleteEntry(button) {
+            const entry = button.parentElement;
+            entry.remove();
+            saveEntries();
+        }
+
+        // 设置当前时间
+        function setCurrentTime(button) {
+            const entry = button.parentElement;
+            const timeInput = entry.querySelector('input[name^="time"]');
+            const now = new Date();
+            const formattedTime = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            timeInput.value = formattedTime;
+            saveEntries();
+        }
+
+        // 生成并复制JSON
+        function generateJSON() {
+            const entries = document.querySelectorAll('.entry');
+            const jsonArray = [];
+
+            entries.forEach((entry, index) => {
+                const versionInput = entry.querySelector(`#version${index + 1}`);
+                const announcementInput = entry.querySelector(`#announcement${index + 1}`);
+                const typeInput = entry.querySelector(`#type${index + 1}`);
+                const timeInput = entry.querySelector(`#time${index + 1}`);
+
+                const version = versionInput ? versionInput.value.trim() : null;
+                const announcement = announcementInput.value.trim();
+                const type = typeInput.value.trim();
+                const time = timeInput.value.trim();
+
+                const entryObject = {
+                    announcement: announcement,
+                    type: type,
+                    time: time
+                };
+
+                if (version) {
+                    entryObject.version = version;
+                }
+
+                jsonArray.push(entryObject);
+            });
+
+            // 按时间从新到旧排序
+            jsonArray.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+            const jsonString = JSON.stringify(jsonArray, null, 2);
+            document.getElementById('output').innerText = jsonString;
+
+            // 复制到剪贴板
+            navigator.clipboard.writeText(jsonString).then(() => {
+                alert('JSON内容已复制到剪贴板！');
+            }).catch(err => {
+                console.error('无法复制到剪贴板: ', err);
+            });
+        }
+
+        // 页面加载时加载数据
+        window.onload = loadEntries;
+    </script>
+</body>
+</html>

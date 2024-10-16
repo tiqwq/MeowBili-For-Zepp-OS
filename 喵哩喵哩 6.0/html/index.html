@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilibili Video Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bilibili Video Info</h1>
+        <div class="form-group">
+            <label for="videoUrl">Video URL:</label>
+            <input type="text" id="videoUrl" placeholder="Enter Bilibili video URL">
+        </div>
+        <div class="form-group">
+            <label for="reference">Reference:</label>
+            <input type="text" id="reference" placeholder="Enter reference">
+        </div>
+        <div class="form-group">
+            <button onclick="fetchVideoInfo()">Get Video Info</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function getBvidFromUrl(url) {
+            const parsedUrl = new URL(url);
+            let bvid = parsedUrl.searchParams.get('bvid');
+            if (!bvid) {
+                const pathParts = parsedUrl.pathname.split('/');
+                bvid = pathParts[2] || '';
+            }
+            return bvid;
+        }
+
+        function fetchVideoInfo() {
+            const videoUrl = document.getElementById('videoUrl').value;
+            const reference = document.getElementById('reference').value;
+            const bvid = getBvidFromUrl(videoUrl);
+
+            if (!bvid) {
+                alert('Invalid Bilibili video URL');
+                return;
+            }
+
+            const proxyUrl = `http://127.0.0.1:5000/get_video_info?bvid=${bvid}`;
+
+            fetch(proxyUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code === 0) {
+                        const videoInfo = data.data;
+                        const output = {
+                            reference: reference,
+                            bvid: videoInfo.bvid,
+                            cid: videoInfo.cid,
+                            aid: videoInfo.aid,
+                            title: videoInfo.title,
+                            author: videoInfo.owner.name,
+                            up_mid: videoInfo.owner.mid
+                        };
+                        document.getElementById('result').innerText = JSON.stringify([output], null, 4);
+                    } else {
+                        document.getElementById('result').innerText = `Error: ${data.message}`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('result').innerText = `Error: ${error.message}`;
+                });
+        }
+    </script>
+</body>
+</html>

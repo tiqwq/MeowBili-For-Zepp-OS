@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成版本号内容</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+        }
+        .current-time-button {
+            margin-top: 5px;
+            padding: 5px 10px;
+            background-color: #28A745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .current-time-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>生成版本号内容</h1>
+        <form id="versionForm">
+            <label for="version">版本号:</label>
+            <input type="text" id="version" name="version" placeholder="例如: 1.1.0">
+            <label for="announcement">公告内容:</label>
+            <textarea id="announcement" name="announcement" rows="4" placeholder="例如: 提高软件稳定性&#10;优化软件流畅度"></textarea>
+            <label for="time">时间:</label>
+            <input type="text" id="time" name="time" placeholder="例如: 2024/10/02 11:45">
+            <button type="button" class="current-time-button" onclick="setCurrentTime()">当前时间</button>
+            <button type="button" onclick="generateJSON()">生成并复制</button>
+        </form>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function setCurrentTime() {
+            const now = new Date();
+            const formattedTime = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            document.getElementById('time').value = formattedTime;
+        }
+
+        function generateJSON() {
+            const version = document.getElementById('version').value;
+            const announcement = document.getElementById('announcement').value;
+            const time = document.getElementById('time').value;
+
+            const jsonContent = {
+                version: version,
+                announcement: announcement,
+                time: time
+            };
+
+            const jsonString = JSON.stringify(jsonContent, null, 2);
+            document.getElementById('output').innerText = jsonString;
+
+            // 复制到剪贴板
+            navigator.clipboard.writeText(jsonString).then(() => {
+                alert('JSON内容已复制到剪贴板！');
+            }).catch(err => {
+                console.error('无法复制到剪贴板: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

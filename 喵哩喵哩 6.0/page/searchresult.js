@@ -1,29 +1,12 @@
-import * as hmUI from "@zos/ui";
 import { BasePage } from "@zeppos/zml/base-page";
-import { LocalStorage } from '@zos/storage'
 import { push } from '@zos/router'
-const localStorage = new LocalStorage()
+import { createWidget, widget, align, prop, text_style, event, getTextLayout } from '@zos/ui';
+import { getSearchResult } from "../func/fetch";
 let textList = []
 let newTextList = []
 let newNewTextList = []
 let buttonList = []
-console.log(localStorage.getItem("login_info"));
-function extractTextFromHTML(htmlString) {
-  const text = htmlString.replace(/<[^>]*>/g, '');
-  return text.trim();
-}
-function formatNumber(num){
-  if(num < 1000){
-      return num.toString();
-  }
-  else if(num < 10000){
-      return (num/1000).toFixed(1) + 'k';
-  }
-  else{
-      return (num / 10000).toFixed(1) + 'w'
-  }
-}
-
+import { extractTextFromHTML, formatNumber } from "../utils/utils";
 let params
 Page(
   BasePage({ 
@@ -31,20 +14,20 @@ Page(
       params = param;
     },
     build() {
-      hmUI.createWidget(hmUI.widget.TEXT, {
+      createWidget(widget.TEXT, {
         x: 210,
         y: 100,
         text_size: 28,
         text: "专栏",
         color: 0xffffff,
-      }).addEventListener(hmUI.event.CLICK_UP, (widget) => {
+      }).addEventListener(event.CLICK_UP, (widget) => {
         push({
           url: 'page/searchresultcolumns',
           params: params,
         })
       })
       for(let i = 0; i < 8; i++) {
-        buttonList[i] = hmUI.createWidget(hmUI.widget.BUTTON, {
+        buttonList[i] = createWidget(widget.BUTTON, {
           x: 30,
           y: 180 + i * 204,
           w: 420,
@@ -53,7 +36,7 @@ Page(
           normal_color: 0x222222,
           press_color: 0x101010,
         })
-        textList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
+        textList[i] = createWidget(widget.TEXT, {
           x: 50,
           y: 200 + i * 204,
           w: px(350),
@@ -61,14 +44,14 @@ Page(
           text_size: 28,
           text: "",
           color: 0xffffff,
-          text_style: hmUI.text_style.WRAP,
+          text_style: text_style.WRAP,
         }) // title
-        hmUI.createWidget(hmUI.widget.IMG,{
+        createWidget(widget.IMG,{
           x: 50,
           y: 310 + i * 204,
           src: 'watchnum.png'
         })
-        newTextList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
+        newTextList[i] = createWidget(widget.TEXT, {
           x: 191,
           y: 307 + i * 204,
           w: px(360),
@@ -76,14 +59,14 @@ Page(
           text_size: 22,
           text: "",
           color: 0x9E9E9E,
-          text_style: hmUI.text_style.WRAP,
+          text_style: text_style.WRAP,
         }) // uname
-        hmUI.createWidget(hmUI.widget.IMG,{
+        createWidget(widget.IMG,{
           x: 165,
           y: 313 + i * 204,
           src: 'up.png'
         })
-        newNewTextList[i] = hmUI.createWidget(hmUI.widget.TEXT, {
+        newNewTextList[i] = createWidget(widget.TEXT, {
           x: 82,
           y: 307 + i * 204,
           w: px(360),
@@ -91,63 +74,41 @@ Page(
           text_size: 20,
           text: "",
           color: 0x9E9E9E,
-          text_style: hmUI.text_style.ELLIPSIS,
+          text_style: text_style.ELLIPSIS,
         }) // viewNumber
       } 
-         this.getWbi() 
+         this.getSearchResult() 
     },
-    getWbi() {
-        this.request({
-            method: "SENDWBIGET",
-            data: {
-              DedeUserID: localStorage.getItem("DedeUserID"),
-              SESSDATA: localStorage.getItem("SESSDATA"),
-              bili_jct: localStorage.getItem("bili_jct"),
-              DedeUserID__ckMd5: localStorage.getItem("DedeUserID__ckMd5"),
-              buvid3: localStorage.getItem("buvid3"),
-            },
-            url: "https://api.bilibili.com/x/web-interface/wbi/search/type",
-            type: "json",
-            info: localStorage.getItem('login_info'),
-            paramsobj: {
-              keyword: params,
-              search_type: "video"
-            }
-          })
-            .then((res) => {
-              for(let i = 0; i < 8; i++) {
-                textList[i].setProperty(hmUI.prop.TEXT, extractTextFromHTML(res.body.data.result[i].title))
-                newTextList[i].setProperty(hmUI.prop.TEXT, res.body.data.result[i].author)
-                newNewTextList[i].setProperty(hmUI.prop.TEXT, formatNumber(res.body.data.result[i].play))
-                textList[i].setEnable(false)
-                buttonList[i].setProperty(hmUI.prop.MORE, {
-                  x: 30,
-                  y: 180 + i * 204,
-                  w: 420,
-                  h: 180,
-                  radius: 40,
-                  normal_color: 0x222222,
-                  press_color: 0x101010,
-                  click_func: (button_widget) => {
-                  push({
-                    url: 'page/videodetail',
-                    params: JSON.stringify({
-                        img_src: res.body.data.result[i].pic,
-                        vid_title: res.body.data.result[i].title,
-                        bv: res.body.data.result[i].bvid,
-                        up_mid: res.body.data.result[i].mid,
-                        id: res.body.data.result[i].aid,
-                    }),
-                  })
-                  },
-                })  
-              }  
-
-              console.log(res);
+    getSearchResult() {
+      getSearchResult(this,params,'video').then((res) => {
+        for (let i = 0; i < 8; i++) {
+          textList[i].setProperty(prop.TEXT, extractTextFromHTML(res.body.data.result[i].title))
+          newTextList[i].setProperty(prop.TEXT, res.body.data.result[i].author)
+          newNewTextList[i].setProperty(prop.TEXT, formatNumber(res.body.data.result[i].play,'text'))
+          textList[i].setEnable(false)
+          buttonList[i].setProperty(prop.MORE, {
+            x: 30,
+            y: 180 + i * 204,
+            w: 420,
+            h: 180,
+            radius: 40,
+            normal_color: 0x222222,
+            press_color: 0x101010,
+            click_func: () => {
+            push({
+              url: 'page/videodetail',
+              params: JSON.stringify({
+                  img_src: res.body.data.result[i].pic,
+                  vid_title: res.body.data.result[i].title,
+                  bv: res.body.data.result[i].bvid,
+                  up_mid: res.body.data.result[i].mid,
+                  id: res.body.data.result[i].aid,
+              })
             })
-            .catch((res) => {
-
-            });
+            }
+          })  
+        }  
+      })
     }
     
   })
