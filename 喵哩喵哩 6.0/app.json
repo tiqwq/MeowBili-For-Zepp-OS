@@ -9,8 +9,8 @@
       "name": "1.0.0"
     },
     "icon": "icon.png",
-    "vender": "易奥林,Struggle",
-    "description": "A sample application to demonstrate the fetch API"
+    "vender": "YiQWQ,Struggle",
+    "description": "rechrd.top"
   },
   "permissions": [
     "data:os.device.info",
@@ -52,7 +52,7 @@
             "page/allBulletin",
            "page/starVideoList",
             "page/developersVideoPush",
-            "page/searchresultcolumns","page/starthello"
+            "page/searchresultcolumns"
           ]
         },
         "app-side": { 
@@ -73,7 +73,7 @@
   },
   "i18n": {
     "en-US": {
-      "appName": "Zepp Bili"
+      "appName": "Meow Bili"
     }
   },
   "defaultLanguage": "en-US"
