@@ -6,90 +6,68 @@ import { back } from '@zos/router'
 import { createWidget, widget, align, prop, text_style, event } from '@zos/ui'
 Page({
   build() {
+      /* createWidget(widget.IMG, {
+        x: 0,
+        y: 0,
+        src: 'Bg.png'
+      }) */
+        createWidget(widget.IMG, {
+          x: 190,
+          y: 50,
+          src: "back.png",
+        })
+        createWidget(widget.TEXT, {
+          x: 220,
+          y: 40,
+          w: px(245),
+          h: px(88),
+          text_size: 32,
+          text: "关于",
+          color: 0xffffff
+        })
       createWidget(widget.IMG, {
-        x: 180,
-        y: 120,
-        src: 'start.png'
+        x: 45,
+        y: 110,
+        src: 'version.png'
       })
-      
-      createWidget(widget.TEXT, {
-        x: 40,
-        y: 280,
-        w: 400,
-        h: 65,
-        color: 0xD0E1E9,
-        text_size: 46,
-        align_h: align.CENTER_H,
-        align_v: align.CENTER_V,
-        text_style: text_style.NONE,
-        text: 'ZeppMeow Bili',
-      })
-     createWidget(widget.TEXT, {
+     
+    createWidget(widget.TEXT, {
       x: 40,
-      y: 330,
+      y: 300,
       w: 400,
       h: 100,
-      color: 0xD0E1E9,
+      color: 0xffffff,
       text_size: 30,
       align_h: align.CENTER_H,
       align_v: align.CENTER_V,
       text_style: text_style.NONE,
-      text: 'V1.0.0(25999)\nTEST:YiQWQ分发通道',
-    })
-    setScrollMode({
-      mode: SCROLL_MODE_SWIPER,
-      options: {
-        height: 480,
-        count: 10,
-      },
-    })
-    createWidget(widget.TEXT, {
-      x: 40,
-      y: 500,
-      w: 400,
-      h: 100,
-      color: 0xD0E1E9,
-      text_size: 40,
-      align_h: align.CENTER_H,
-      align_v: align.CENTER_V,
-      text_style: text_style.NONE,
-      text: '致谢\n开发团队',
+      text: '本项目归属于',
     })
     createWidget(widget.FILL_RECT, {
-      x: 60,
-      y: 660,
-      w: 360,
-      h: 180,
-      radius: 20,
-      color: 0x333333
+      x: 125,
+      y: 380,
+      w: 230,
+      h: 80,
+      radius: 40,
+      color:  0x222222
     })
     createWidget(widget.IMG, {
-      x: 185,
-      y: 700,
-      src: 'cd.png'
+      x: 145,
+      y: 389,
+      src: "zeele.png",
     })
-    
     createWidget(widget.TEXT, {
-      x: 110,
-      y: 670,
-      w: 288,
-      h: 160,
-      color: 0xB5CBD8,
-      text_size: 47,
+      x: 70,
+      y: 370,
+      w: 400,
+      h: 100,
+      color: 0xffffff,
+      text_size: 25,
       align_h: align.CENTER_H,
       align_v: align.CENTER_V,
       text_style: text_style.NONE,
-      text: 'Bydour\nDevelopers',
+      text: 'Zeele·Zerv',
     })
-    createWidget(widget.FILL_RECT, {
-      x: 60,
-      y: 860,
-      w: 360,
-      h: 60,
-      radius: 20,
-      color: 0x333333
-    })
-    
     createWidget(widget.TEXT, {
       x: 50,
       y: 810,

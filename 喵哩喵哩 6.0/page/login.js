@@ -47,7 +47,11 @@ class Login {
   createQrcode() {
     this.getQrcode(this.fetch).then((data) => {
       const { result = {} } = data;
-      
+      createWidget(widget.IMG, {
+        x: 0,
+        y: 0 ,
+        src: 'Bg.png'
+      });
       this.qrcodeWidget = createWidget(widget.QRCODE, {
         content: result[0],
         x: 140,
