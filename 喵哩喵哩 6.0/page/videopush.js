@@ -22,52 +22,67 @@ class VideoPage {
       videoViewList: [],
       buttonList: []
     };
+ 
     this.textContent = textContent;
   }
-
+  
   build() {
+   
     createWidget(widget.PAGE_SCROLLBAR);
     this.createVideoWidgets();
     this.createHeaderWidgets();
     this.createRandomTextWidget();
     this.createLoadMoreButton();
-
+ 
     if (this.list != undefined) {
       this.readListStorage();
     } else {
       this.getVideoList();
     }
+    
   }
 
   createVideoWidgets() {
+    createWidget(widget.IMG, {
+      x: 0,
+      y: 0,
+      src: 'Bg.png'
+    });
     for (let i = 0; i < this.videoNum; i++) {
+    
       this.state.buttonList[i] = createWidget(widget.BUTTON, {
-        x: 30,
-        y: 350 + i * 204,
-        w: 420,
+        x: 40,
+        y: 135 + i * 204,
+        w: 400,
         h: 180,
         radius: 40,
-        normal_color: 0x222222,
+        normal_color: 0x9E9E9E,
         press_color: 0x101010,
-      });
+      }),//.setAlpha(210);
       this.state.titleList[i] = createWidget(widget.TEXT, {
-        x: 50,
-        y: 370 + i * 204,
-        w: px(350),
-        h: px(88),
-        text_size: 28,
+        x: 210,
+        y: 148 + i * 204,
+        w: px(210),
+        h: px(130),
+        text_size: 20,
         text: "",
         color: 0xffffff,
+        align_v	:align.CENTER_V,
         text_style: text_style.WRAP,
       });
       createWidget(widget.IMG, {
         x: 50,
-        y: 480 + i * 204,
+        y: 150 + i * 204,
+        src: 'loding.png'
+      });
+      createWidget(widget.IMG, {
+        x: 75,
+        y: 280 + i * 204,
         src: 'watchnum.png'
       });
       this.state.unameList[i] = createWidget(widget.TEXT, {
-        x: 191,
-        y: 477 + i * 204,
+        x: 216,
+        y: 277 + i * 204,
         w: px(360),
         h: px(40),
         text_size: 22,
@@ -75,14 +90,16 @@ class VideoPage {
         color: 0x9E9E9E,
         text_style: text_style.WRAP
       });
+
+
       createWidget(widget.IMG, {
-        x: 165,
-        y: 483 + i * 204,
+        x: 190,
+        y: 283 + i * 204,
         src: 'up.png'
       });
       this.state.videoViewList[i] = createWidget(widget.TEXT, {
-        x: 82,
-        y: 477 + i * 204,
+        x: 107,
+        y: 277 + i * 204,
         w: px(360),
         h: px(40),
         text_size: 20,
@@ -90,80 +107,50 @@ class VideoPage {
         color: 0x9E9E9E,
         text_style: text_style.ELLIPSIS,
       });
+   
     }
   }
-
+ 
   createHeaderWidgets() {
-    createWidget(widget.TEXT, {
-      x: 200,
-      y: 60,
-      w: px(245),
-      h: px(88),
-      text_size: 38,
-      text: "推荐",
+  
+    
+    createWidget(widget.BUTTON, {
+      x: 150,
+      y: 20,
+      w: px(170),
+      h: px(50),
+      text_size: 25,
+      text: "推荐      ",
       color: 0xffffff,
-      text_style: text_style.WRAP,
-    });
-
-    createWidget(widget.FILL_RECT, {
-      x: 110,
-      y: 110,
-      w: 106,
-      h: 106,
-      radius: 55,
-      color: 0x171717
-    }).addEventListener(event.CLICK_UP, () => {
-      push({ url: 'page/trending' });
-    });
-
+      radius: 20,
+      align_h:align.RIGHT,
+      normal_color: 0x000000,
+        press_color: 0x101010,
+      
+      click_func: (button_widget) => {
+        push({ url: 'page/info_main' });
+      }
+    }) 
     createWidget(widget.IMG, {
-      x: 145,
-      y: 145,
-      src: 'search.png'
-    }).addEventListener(event.CLICK_UP, () => {
-      push({ url: 'page/trending' });
-    });
-
-    createWidget(widget.FILL_RECT, {
-      x: 260,
-      y: 110,
-      w: 106,
-      h: 106,
-      radius: 55,
-      color: 0x171717
-    }).addEventListener(event.CLICK_UP, () => {
-      push({ url: 'page/account' });
-    });
-
-    createWidget(widget.IMG, {
-      x: 295,
-      y: 145,
-      src: 'head.png'
-    }).addEventListener(event.CLICK_UP, () => {
-      push({ url: 'page/account' });
-    });
-
-    createWidget(widget.FILL_RECT, {
-      x: 30,
-      y: 225,
-      w: 420,
-      h: 100,
-      radius: 40,
-      color: 0x222222
-    });
-  }
+      x: 185,
+      y: 25,
+      src: 'icon1.png'
+    })
+ 
+  } 
 
   createRandomTextWidget() {
     let content = this.textContent[randomNum(0, this.textContent.length - 1)];
-    let new_content = "";
+    let new_content = ""; // 添加这一行来初始化 new_content
     let i = 0;
     const text = createWidget(widget.TEXT, {
-      x: 60,
-      y: 235,
-      w: 380,
-      h: px(88),
-      text_size: 28,
+      x: 70,
+      y: 75,
+      w: 350,
+      h: px(58),
+      text_size: 20,
       color: 0xffffff,
+      align_h: align.CENTER_H,
       align_v: align.CENTER_V,
       text_style: text_style.WRAP,
       text: '',
@@ -185,7 +172,7 @@ class VideoPage {
   createLoadMoreButton() {
     createWidget(widget.BUTTON, {
       x: 60,
-      y: 2390,
+      y: 2300,
       w: px(360),
       h: px(100),
       text_size: px(36),
@@ -207,9 +194,9 @@ class VideoPage {
       this.state.videoViewList[i].setProperty(prop.TEXT, formatNumber(this.list[i].stat.view));
       this.state.titleList[i].setEnable(false);
       this.state.buttonList[i].setProperty(prop.MORE, {
-        x: 30,
-        y: 350 + i * 204,
-        w: 420,
+        x: 40,
+        y: 135 + i * 204,
+        w: 400,
         h: 180,
         radius: 40,
         normal_color: 0x222222,
@@ -239,9 +226,9 @@ class VideoPage {
         this.state.videoViewList[i].setProperty(prop.TEXT, formatNumber(res.item[i].stat.view, 'num'));
         this.state.titleList[i].setEnable(false);
         this.state.buttonList[i].setProperty(prop.MORE, {
-          x: 30,
-          y: 350 + i * 204,
-          w: 420,
+          x: 40,
+          y: 135 + i * 204,
+          w: 400,
           h: 180,
           radius: 40,
           normal_color: 0x222222,
