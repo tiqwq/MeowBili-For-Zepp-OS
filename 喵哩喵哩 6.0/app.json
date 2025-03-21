@@ -1,16 +1,16 @@
 {
   "configVersion": "v3",
   "app": {
-    "appId": 28285,
-    "appName": "MeowBili",
+    "appId": 1068599,
+    "appName": "喵喵哔哩",
     "appType": "app",
     "version": {
       "code": 1,
-      "name": "1.0.0"
+      "name": "4.0.0"
     },
     "icon": "icon.png",
     "vender": "YiQWQ,Struggle",
-    "description": "rechrd.top"
+    "description": "A third party BiliBili for Amazfit Zepp OS"
   },
   "permissions": [
     "data:os.device.info",
@@ -29,19 +29,23 @@
         "page": {
           "pages": [ 
             
-            "page/index",
+           "page/index",
+            "page/account",
+            "page/videopush",
+           
             "page/login",
             "page/about",
             "page/trending",
             "page/searchresult",
-            "page/account",
-            "page/videoaisummary",
-            "page/videopush",
+            "page/network",
+            "page/videoaisummary","page/board",
+            
+
             "page/videoreplies",
             "page/videodetail",
             "page/message",
             "page/messageList",
-            "page/board",
+            "page/info_main",
             "page/columns",
             "page/update",
             "page/laterSee",
@@ -63,17 +67,14 @@
         {
           "st": "r",
           "dw": 480
-        },
-        {
-          "st": "s",
-          "dw": 390
         }
+       
       ]
     }
   },
   "i18n": {
     "en-US": {
-      "appName": "Meow Bili"
+      "appName": "MeowBili"
     }
   },
   "defaultLanguage": "en-US"
