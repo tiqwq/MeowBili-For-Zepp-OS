@@ -133,6 +133,7 @@ class AccountPage {
     });
   }
 
+  
   getAccountData() {
     getUpAccount(this.page,localStorage.getItem('DedeUserID')).then(res => {
       this.widgets.uname.setProperty(prop.TEXT, res.body.data.card.name);

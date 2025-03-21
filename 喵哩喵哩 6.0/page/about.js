@@ -11,6 +11,9 @@ Page({
         y: 0,
         src: 'Bg.png'
       }) */
+
+
+
         createWidget(widget.IMG, {
           x: 190,
           y: 50,
@@ -31,6 +34,8 @@ Page({
         src: 'version.png'
       })
      
+
+      
     createWidget(widget.TEXT, {
       x: 40,
       y: 300,
@@ -51,11 +56,7 @@ Page({
       radius: 40,
       color:  0x222222
     })
-    createWidget(widget.IMG, {
-      x: 145,
-      y: 389,
-      src: "zeele.png",
-    })
+    
     createWidget(widget.TEXT, {
       x: 70,
       y: 370,

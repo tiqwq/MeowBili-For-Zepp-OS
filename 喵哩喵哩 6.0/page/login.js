@@ -44,13 +44,15 @@ class Login {
     }, 1000);
   }
   
+
+  
   createQrcode() {
     this.getQrcode(this.fetch).then((data) => {
       const { result = {} } = data;
       createWidget(widget.IMG, {
         x: 0,
-        y: 0 ,
-        src: 'Bg.png'
+        y: -190,
+        src: 'bg.png'
       });
       this.qrcodeWidget = createWidget(widget.QRCODE, {
         content: result[0],

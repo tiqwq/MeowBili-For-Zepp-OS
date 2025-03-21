@@ -49,6 +49,7 @@ class MessagePage {
   build() {
     function createMessages(resu) {
       for (let i = 0; i < resu.messages.length; i++) {
+        
         const messageText = parseJsonContent(resu.messages[i].content);
         const textLayout = getTextLayout(messageText, {
           text_size: 20,
@@ -58,8 +59,8 @@ class MessagePage {
 
         const xPosition = resu.messages[i].sender_uid == localStorage.getItem("DedeUserID") ? 480 - textLayout.width - 20 : 50;
         const align1 = resu.messages[i].sender_uid == localStorage.getItem("DedeUserID") ? align.RIGHT : align.LEFT;
-
-        createWidget(widget.FILL_RECT, {
+        
+      createWidget(widget.FILL_RECT, {
           x: xPosition - 10,
           y: this.yOffset,
           w: textLayout.width + 20, 
@@ -68,7 +69,7 @@ class MessagePage {
           radius: 20
         });
 
-        createWidget(widget.TEXT, {
+         createWidget(widget.TEXT, {
           x: xPosition,
           y: this.yOffset + 10,
           w: textLayout.width,

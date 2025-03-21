@@ -6,6 +6,7 @@ import { px } from '@zos/utils'
 import { createWidget, widget, align, prop, text_style, event, getTextLayout } from '@zos/ui';
 import { follorBydour, UnfollorSearchStars, getWbi } from '../func/fetch';
 const localStorage = new LocalStorage()
+import { setScrollLock } from '@zos/page'
 
 class Index {
   constructor(fetch) {
@@ -15,26 +16,63 @@ class Index {
     this.fetch = fetch
   }
   build() {
+    setScrollLock({
+      lock: true,
+       
+    })
+    createWidget(widget.IMG, {
+      x: 0,
+      y: 0,
+      src: 'bg.png'
+    });
     createWidget(widget.IMG, {
       x: px(180),
-      y: px(180),
+      y: px(140),
       src: 'start.png',
+    });
+    createWidget(widget.TEXT, {
+      x: 96,
+      y: 250,
+      w: 288,
+      h: 100,
+      color: 0xffffff,
+      text_size: 19,
+      align_h: align.CENTER_H,
+      align_v: align.CENTER_V,
+      text_style: text_style.NONE,
+      text: 'MeowBili β\nversion 2.0.1\n检查登录状态中...',
     })
-    setTimeout(()=> {
+    setTimeout(() => {
+      //console.log('Hello Zepp OS')
+   
+    createWidget(widget.BUTTON, {
+      x: (480 - 180) / 2,
+      y: 380,
+      w: 180,
+      h: 80,
+      radius: 45,
+      normal_color: 0xE47097,
+      press_color: 0xfeb4a8,
+      text: '检查网络状态',
+      click_func: (button_widget) => {
+        push({
+          url: 'page/network', 
+      })
+      }
+    })
+   }, 4000)
+     setTimeout(()=> {
       if (localStorage.getItem('SESSDATA') == undefined || localStorage.getItem('DedeUserID') == undefined || localStorage.getItem('bili_jct') == undefined || localStorage.getItem('buvid3') == undefined || localStorage.getItem('DedeUserID__ckMd5') == undefined || localStorage.getItem('bili_jct') == undefined) {
           push({
               url: 'page/login', 
           })
+
+          
           console.log('buvid3' + localStorage.getItem('buvid3'));
           
           console.log('login');
       } else {
-          // this.follorBydour(this.fetch).then((res) => {
-          //   if (res.body.message == "0") console.log("成功关注Bydour");
-          // })
-          // this.UnfollorSearchStars(this.fetch).then((res) => {
-          //   if (res.body.message == "0") console.log("成功取关SearchStars");
-          // })
+         
           this.getWbi(this.fetch).then((res) => {
             localStorage.setItem('login_info',res.body.data.wbi_img)
             replace({
@@ -43,7 +81,7 @@ class Index {
             console.log('video');
           })
       }
-    }, 1000)
+    }, 4000) 
   }
 }
 Page(

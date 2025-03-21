@@ -16,11 +16,18 @@ class GetMessageListPage {
     this.createMessageWidgets();
     this.createHeaderWidgets();
     this.getMessageList();
+  
   }
-
   createMessageWidgets() {
+    const viewContainerButton = createWidget(widget.VIEW_CONTAINER, {
+    x: px(0),
+    y: px(86),
+    w: px(480),
+    h: px(400),
+   
+  })
     for (let i = 0; i < 20; i++) {
-      this.rectList[i] = createWidget(widget.BUTTON, {
+      this.rectList[i] = viewContainerButton.createWidget(widget.BUTTON, {
         x: 40,
         y: 85 + i * 155,
         w: 392,
@@ -29,7 +36,8 @@ class GetMessageListPage {
         normal_color: 0x222222,
         press_color: 0x101010
       });
-      this.nameList[i] = createWidget(widget.TEXT, {
+      
+      this.nameList[i] =viewContainerButton. createWidget(widget.TEXT, {
         x: 164,
         y: 109 + i * 155,
         w: 229,
@@ -38,7 +46,7 @@ class GetMessageListPage {
         color: 0xffffff,
         text_size: 22,
       });
-      this.textList[i] = createWidget(widget.TEXT, {
+      this.textList[i] = viewContainerButton.createWidget(widget.TEXT, {
         x: 164,
         y: 145 + i * 155,
         w: 229,

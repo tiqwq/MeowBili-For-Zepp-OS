@@ -29,6 +29,8 @@ const importPublicKey = () => {
   );
 };
 
+
+
 // 加密数据并返回路径
 const getCorrespondPath = (timestamp, publicKey) => {
   const data = new TextEncoder().encode(`refresh_${timestamp}`);
@@ -41,6 +43,8 @@ const getCorrespondPath = (timestamp, publicKey) => {
 
 // 获取当前时间戳
 const ts = Date.now();
+
+
 
 // 导入公钥并获取对应路径
 importPublicKey()

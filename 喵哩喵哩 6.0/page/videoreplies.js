@@ -15,6 +15,8 @@ class ReplyListPage {
     this.res = null;
   }
 
+
+  
   onInit(param) {
     this.params = JSON.parse(param);
     console.log(param);
