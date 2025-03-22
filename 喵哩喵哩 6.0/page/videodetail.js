@@ -43,97 +43,87 @@ class VideoDetailPage {
   createWidgets() {
     createWidget(widget.FILL_RECT, {
       x: 30,
-      y: 463,
+      y: 363,
       w: 420,
       h: 127,
       radius: 40,
       color: 0x222222
     });
 
-    createWidget(widget.IMG, {
-      x: 150,
-      y: 50,
-      src: "back.png",
-    }).addEventListener(event.CLICK_UP, () => {
-      back();
-    });
+   
 
     createWidget(widget.TEXT, {
-      x: 180,
-      y: 40,
-      w: px(245),
-      h: px(88),
-      text_size: 32,
+      x: px(50),
+      y: px(80),
+      w: px(400),
+      h: px(100),
+      text_size: 50,
       text: "视频详情",
-      color: 0xffffff,
-      text_style: text_style.WRAP,
-    });
-
-    createWidget(widget.IMG, {
-      x: 80,
-      y: 100,
-      src: "spfm.png",
-    });
+      color: 0xff93c4,
+      align_h: align.LEFT,
+      align_v: align.CENTER_V,
+      text_style: text_style.NONE
+  })
 
     createWidget(widget.TEXT, {
-      x: 20,
-      y: 370,
-      w: 430,
-      h: px(88),
-      text_size: 30,
+    x: px(50),
+    y: px(180),
+    w: px(300),
+    h: px(300),
+      text_size: 25,
       text: extractTextFromHTML(this.params.vid_title),
       color: 0xffffff,
-      align_h: align.CENTER_H,
+      align_h: align.LEFT,
       text_style: text_style.WRAP,
     });
 
     this.widgets.fensi = createWidget(widget.TEXT, {
       x: 145,
-      y: 533,
+      y: 433, // Reduced by 100
       w: 294,
       h: px(40),
       text_size: 22,
-      text: '未知',
+      text: '加载中...',
       color: 0xffffff,
       text_style: text_style.ELLIPSIS,
     });
 
     this.widgets.zan = createWidget(widget.TEXT, {
       x: 32,
-      y: 735,
+      y: 635, // Reduced by 100
       w: 294,
       h: px(40),
       text_size: 22,
-      text: '未知',
+      text: '加载中...',
       color: 0x9E9E9E,
       text_style: text_style.ELLIPSIS,
     });
 
     this.widgets.now = createWidget(widget.TEXT, {
       x: 32,
-      y: 763,
+      y: 663, // Reduced by 100
       w: 294,
       h: px(40),
       text_size: 22,
-      text: '未知',
+      text: '加载中...',
       color: 0x9E9E9E,
       text_style: text_style.ELLIPSIS,
     });
 
     this.widgets.view = createWidget(widget.TEXT, {
       x: 32,
-      y: 792,
+      y: 692, // Reduced by 100
       w: 294,
       h: px(40),
       text_size: 22,
-      text: '未知',
+      text: '加载中...',
       color: 0x9E9E9E,
       text_style: text_style.ELLIPSIS,
     });
 
     this.widgets.time = createWidget(widget.TEXT, {
       x: 32,
-      y: 818,
+      y: 718, // Reduced by 100
       w: 294,
       h: px(40),
       text_size: 22,
@@ -144,7 +134,7 @@ class VideoDetailPage {
 
     this.widgets.bv = createWidget(widget.TEXT, {
       x: 32,
-      y: 844,
+      y: 744, // Reduced by 100
       w: 294,
       h: px(40),
       text_size: 22,
@@ -155,7 +145,7 @@ class VideoDetailPage {
 
     this.widgets.uname = createWidget(widget.TEXT, {
       x: 145,
-      y: 487,
+      y: 387, // Reduced by 100
       w: 294,
       h: px(40),
       text_size: 20,
@@ -163,62 +153,62 @@ class VideoDetailPage {
       color: 0xffffff,
       text_style: text_style.ELLIPSIS,
     });
-  }
+    }
 
-  createButtons() {
+    createButtons() {
     createWidget(widget.IMG, {
       x: 46,
-      y: 628,
+      y: 528, // Reduced by 100
       src: "zan.png",
     }).addEventListener(event.CLICK_UP, () => {
       likeVideo(this.page, this.params.bv).then((res) => {
-        if (res.body.code == 0) {
-          showToast({
-            content: "点赞成功"
-          });
-        } else {
-          showToast({
-            content: "点赞失败，报错信息：" + res.body.message
-          });
-        }
+      if (res.body.code == 0) {
+        showToast({
+        content: "点赞成功"
+        });
+      } else {
+        showToast({
+        content: "点赞失败，报错信息：" + res.body.message
+        });
+      }
       });
     });
 
     createWidget(widget.IMG, {
       x: 191,
-      y: 628,
+      y: 528, // Reduced by 100
       src: "bi.png",
     }).addEventListener(event.CLICK_UP, () => {
       coinVideo(this.page, this.params.bv).then((res) => {
-        if (res.body.code == 0) {
-          showToast({
-            content: "投币成功"
-          });
-        } else {
-          showToast({
-            content: "投币失败，报错信息：" + res.body.message
-          });
-        }
+      if (res.body.code == 0) {
+        showToast({
+        content: "投币成功"
+        });
+      } else {
+        showToast({
+        content: "投币失败，报错信息：" + res.body.message
+        });
+      }
       });
     });
 
     createWidget(widget.IMG, {
       x: 341,
-      y: 628,
+      y: 528, // Reduced by 100
       src: "star.png",
     }).addEventListener(event.CLICK_UP, () => {
       getAllFolder(this.page).then((res) => {
-        res.body.data.list.forEach(folder => {
-          if (folder.title === "默认收藏夹") {
-            this.starFunc(folder.id);
-          }
-        });
+      res.body.data.list.forEach(folder => {
+        if (folder.title === "默认收藏夹") {
+        this.starFunc(folder.id);
+        }
+      });
       });
     });
     
     createWidget(widget.BUTTON, {
       x: 60,
-      y: 1010,
+      y: 910, // Reduced by 100
       w: px(360),
       h: px(100),
       text_size: px(36),
@@ -227,23 +217,23 @@ class VideoDetailPage {
       press_color: 0x101010,
       text: "Ai视频总结",
       click_func: () => {
-        push({
-          url: "page/videoaisummary",
-          params: JSON.stringify({
-            img_src: this.params.img_src,
-            vid_title: this.params.vid_title,
-            bv: this.params.bv,
-            cid: this.cid,
-            up_mid: this.params.up_mid,
-            id: this.params.id
-          })
-        });
+      push({
+        url: "page/videoaisummary",
+        params: JSON.stringify({
+        img_src: this.params.img_src,
+        vid_title: this.params.vid_title,
+        bv: this.params.bv,
+        cid: this.cid,
+        up_mid: this.params.up_mid,
+        id: this.params.id
+        })
+      });
       },
     });
     
     createWidget(widget.BUTTON, {
       x: 60,
-      y: 900,
+      y: 800, // Reduced by 100
       w: px(360),
       h: px(100),
       text_size: px(36),
@@ -252,23 +242,23 @@ class VideoDetailPage {
       press_color: 0x101010,
       text: "评论区",
       click_func: () => {
-        push({
-          url: "page/videoreplies",
-          params: JSON.stringify({
-            img_src: this.params.img_src,
-            vid_title: this.params.vid_title,
-            bv: this.params.bv,
-            cid: this.params.cid,
-            up_mid: this.params.up_mid,
-            id: this.aid
-          })
-        });
+      push({
+        url: "page/videoreplies",
+        params: JSON.stringify({
+        img_src: this.params.img_src,
+        vid_title: this.params.vid_title,
+        bv: this.params.bv,
+        cid: this.params.cid,
+        up_mid: this.params.up_mid,
+        id: this.aid
+        })
+      });
       },
     });
 
     createWidget(widget.BUTTON, {
       x: 60,
-      y: 1120,
+      y: 1020, // Reduced by 100
       w: px(360),
       h: px(100),
       text_size: px(36),
@@ -277,19 +267,19 @@ class VideoDetailPage {
       press_color: 0x101010,
       text: "发评论",
       click_func: () => {
-        push({
-          url: "page/board",
-          params: JSON.stringify({
-            type: "sendreply",
-            id: this.params.id
-          })
-        });
+      push({
+        url: "page/board",
+        params: JSON.stringify({
+        type: "sendreply",
+        id: this.params.id
+        })
+      });
       },
     });
 
     createWidget(widget.BUTTON, {
       x: 60,
-      y: 1230,
+      y: 1130, // Reduced by 100
       w: px(360),
       h: px(100),
       text_size: px(36),
@@ -298,17 +288,17 @@ class VideoDetailPage {
       press_color: 0x101010,
       text: "发弹幕",
       click_func: () => {
-        push({
-          url: "page/board",
-          params: JSON.stringify({
-            type: "senddm",
-            cid: this.cid,
-            id: this.params.id
-          })
-        });
+      push({
+        url: "page/board",
+        params: JSON.stringify({
+        type: "senddm",
+        cid: this.cid,
+        id: this.params.id
+        })
+      });
       },
     });
-  }
+    }
 
   getVideoDetail() {
     getVideoDetail(this.page, this.params.bv).then((res) => {

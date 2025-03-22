@@ -52,7 +52,7 @@ class Login {
       createWidget(widget.IMG, {
         x: 0,
         y: -190,
-        src: 'bg.png'
+        src: 'yellow.png'
       });
       this.qrcodeWidget = createWidget(widget.QRCODE, {
         content: result[0],

@@ -19,6 +19,11 @@ class GetMessageListPage {
   
   }
   createMessageWidgets() {
+    createWidget(widget.IMG, {
+      x: 0,
+      y: -190,
+      src: 'yellow.png'
+    });
     const viewContainerButton = createWidget(widget.VIEW_CONTAINER, {
     x: px(0),
     y: px(86),

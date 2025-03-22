@@ -23,7 +23,7 @@ class Index {
     createWidget(widget.IMG, {
       x: 0,
       y: 0,
-      src: 'bg.png'
+      src: 'pink.png'
     });
     createWidget(widget.IMG, {
       x: px(180),

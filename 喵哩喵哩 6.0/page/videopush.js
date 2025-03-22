@@ -6,6 +6,7 @@ import { BasePage } from "@zeppos/zml/base-page";
 import { px } from "@zos/utils";
 import { push } from '@zos/router';
 import { LocalStorage } from '@zos/storage';
+import { getDeviceInfo, SCREEN_SHAPE_SQUARE } from '@zos/device'
 // 个人模块导入
 import { fetchVideoList } from "../func/fetch";
 import { formatNumber, randomNum, textContent} from "../utils/utils";
@@ -14,7 +15,7 @@ const localStorage = new LocalStorage();
 
 class VideoPage {
   constructor(page) {
-    
+    //这样啊  那我request怎么没了
     this.state = {
       titleList: [],
       unameList: [],
@@ -24,7 +25,7 @@ class VideoPage {
  this.textContent = textContent;
     this.videoNum = 15;
     this.list = localStorage.getItem("list", undefined);
-    
+    this.page = page
   }
   
   build() { 
@@ -36,7 +37,8 @@ class VideoPage {
         count: 2,
       },
     })
-   
+    const { width: screenWidth, screenHight } = getDeviceInfo();
+    console.log("rechrd:" + screenWidth);
     
     createWidget(widget.PAGE_SCROLLBAR);
     this.createVideoWidgets();
@@ -78,7 +80,7 @@ class VideoPage {
     createWidget(widget.IMG, {
       x: 0,
       y: 0,
-      src: 'Bg.png'
+      src: 'pink.png'
     });
 
     videolist.createWidget(widget.TEXT, {
@@ -86,18 +88,42 @@ class VideoPage {
       y: 20,
       w: 400,
       h: 100,
-      text_size: 50,
+      text_size: 60,
       text: "推荐",
       color: 0xff93c4,
       align_h: align.LEFT,
       align_v: align.CENTER_V,
       text_style: text_style.NONE
   })
+
+
+  videolist.createWidget(widget.BUTTON, {
+    x: px(40),
+    y: 120, 
+    w: 400,
+    h: 80,
+    radius: 25,
+    normal_color: 0x222222,
+    press_color: 0x9E9E9E,
+    text: '  搜索',
+   
+    text_size: 35,
+    align_h: align.LEFT,
+    click_func: (button_widget) => {
+      
+        push({ url: 'page/trending' });
+      
+    }
+  })
+
+
+
+
     for (let i = 0; i < this.videoNum; i++) {
     
       this.state.buttonList[i] = videolist.createWidget(widget.BUTTON, {
-        x: 40,
-        y: 135 + i * 204,
+        x: px(40),
+        y: 225 + i * 204, // y increased by 90
         w: 400,
         h: 180,
         radius: 40,
@@ -105,32 +131,32 @@ class VideoPage {
         press_color: 0x101010,
       }),//.setAlpha(210);
       this.state.titleList[i] = videolist.createWidget(widget.TEXT, {
-        x: 210,
-        y: 148 + i * 204,
+        x: px(210),
+        y: 238 + i * 204, // y increased by 90
         w: px(210),
         h: px(130),
-        text_size: 20,
+        text_size: 23,
         text: "",
         color: 0xffffff,
         align_v	:align.CENTER_V,
         text_style: text_style.WRAP,
       });
       videolist.createWidget(widget.IMG, {
-        x: 50,
-        y: 150 + i * 204,
+        x: px(50),
+        y: 240 + i * 204, // y increased by 90
         src: 'loding.png'
       });
       videolist.createWidget(widget.IMG, {
-        x: 75,
-        y: 280 + i * 204,
+        x: px(75),
+        y: 370 + i * 204, // y increased by 90
         src: 'watchnum.png'
       });
       this.state.unameList[i] = videolist.createWidget(widget.TEXT, {
-        x: 216,
-        y: 277 + i * 204,
+        x: px(216),
+        y: 370 + i * 204, // y increased by 90
         w: px(360),
         h: px(40),
-        text_size: 22,
+        text_size: 17,
         text: "",
         color: 0x9E9E9E,
         text_style: text_style.WRAP
@@ -138,16 +164,16 @@ class VideoPage {
 
 
       videolist.createWidget(widget.IMG, {
-        x: 190,
-        y: 283 + i * 204,
+        x: px(190),
+        y: 373 + i * 204, // y increased by 90
         src: 'up.png'
       });
       this.state.videoViewList[i] = videolist.createWidget(widget.TEXT, {
-        x: 107,
-        y: 277 + i * 204,
+        x: px(107),
+        y: 370 + i * 204, // y increased by 90
         w: px(360),
         h: px(40),
-        text_size: 20,
+        text_size: 17,
         text: "",
         color: 0x9E9E9E,
         text_style: text_style.ELLIPSIS,
@@ -159,9 +185,9 @@ class VideoPage {
  
   createHeaderWidgets() {
     const text = createWidget(widget.TEXT, {
-      x: 94,
-      y: 16,
-      w: 288,
+      x: px(196) ,
+      y: px(16),
+      w: 88,
       h: 46,
       color: 0xffffff,
       text_size: 24,
@@ -193,9 +219,9 @@ class VideoPage {
     let new_content = ""; // 添加这一行来初始化 new_content
     let i = 0;
     const text =createWidget(widget.TEXT, {
-      x: 70,
-      y: 40,
-      w: 350,
+      x: px(65) ,
+      y: px(40),
+      w: px(350),
       h: px(58),
       text_size: 20,
       color: 0xffffff,
@@ -227,8 +253,8 @@ class VideoPage {
       this.state.videoViewList[i].setProperty(prop.TEXT, formatNumber(this.list[i].stat.view));
       this.state.titleList[i].setEnable(false);
       this.state.buttonList[i].setProperty(prop.MORE, {
-        x: 40,
-        y: 135 + i * 204,
+        x: px(40),
+        y: 225 + i * 204, // y increased by 90
         w: 400,
         h: 180,
         radius: 40,
@@ -259,8 +285,8 @@ class VideoPage {
         this.state.videoViewList[i].setProperty(prop.TEXT, formatNumber(res.item[i].stat.view, 'num'));
         this.state.titleList[i].setEnable(false);
         this.state.buttonList[i].setProperty(prop.MORE, {
-          x: 40,
-          y: 135 + i * 204,
+          x: px(40),
+          y: 225 + i * 204, // y increased by 90
           w: 400,
           h: 180,
           radius: 40,
@@ -285,47 +311,50 @@ class VideoPage {
     });
   } 
   createLoadMoreButton() {
-    const viewContainerButton = createWidget(widget.VIEW_CONTAINER, {
+  
+    const view = createWidget(widget.VIEW_CONTAINER, {
       x: px(0),
-      y: px(86),
+      y: px(370),
       w: px(480),
-      h: px(400),
+      h: px(100),
+      page: 0,
       z_index: 1,
       scroll_enable: false
     })
-
-    viewContainerButton.createWidget(widget.BUTTON, {
-      x: 60,
-      y: 300,
-      w: px(360),
-      h: px(100),
-      text_size: px(36),
+    
+    view.createWidget(widget.BUTTON, {
+      x: 200,
+      y: px(10),
+      w: px(80),
+      h: px(80),
+      text: '↺',
       radius: 50,
-      normal_src: 'update.png',
-      press_src: 'update.png',
-      //text: "加载更多",
+      normal_color: 0xff93c4,     
+      press_color: 0xfeb4a8,
       click_func: () => {
         this.getVideoList();
-        
       }
     })
-   
   }
 
 createWidgets() {
-   
+  createWidget(widget.IMG, {
+    x: 480,
+    y: 0,
+    src: 'yellow.png'
+  });
   const User = createWidget(widget.VIEW_CONTAINER, {
     x: px(0),
-    y: px(70),
-    w: px(480),
-    h: px(450),
-    page: 1
+      y: px(66),
+      w: px(480),
+      h: px(400),
+      page:1,
   })
   const text = createWidget(widget.TEXT, {
-    x: 574,
-    y: 16,
-    w: 288,
-    h: 46,
+    x: px(574),
+    y: px(16),
+    w: px(288),
+    h: px(46),
     color: 0xffffff,
     text_size: 24,
     align_h: align.CENTER_H,
@@ -350,7 +379,7 @@ createWidgets() {
     y: px(20),
     w: px(400),
     h: px(100),
-    text_size: 50,
+    text_size: 60,
     text: "我的",
     color: 0xff93c4,
     align_h: align.LEFT,
@@ -362,16 +391,24 @@ createWidgets() {
     y: px(125),
     w: px(400),
     h: px(150),
-    radius: 20,
+    radius: 35,
     normal_color: 0x9BA0AA,
     press_color: 0x101010,
     click_func: () => {
       push({ url: 'page/account' });
     },
   })
+  User.createWidget(widget.IMG, {
+    x: px(70),
+    y: px(160),
+    w: 90,
+    h: 90,
+    auto_scale: true,
+    src: 'icon.png'
+  });
   User.createWidget(widget.TEXT, {
     x: px(140),
-    y: px(170),
+    y: px(175),
     w: px(288),
     h: px(46),
     color: 0xffffff,
@@ -397,7 +434,7 @@ createWidgets() {
       w: px(400),
       h: px(100),
       text_size: px(36),
-      radius: 30,
+      radius: 40,
       normal_color: 0x1F1F1F,
       press_color: 0x101010,
       text: config.text,
