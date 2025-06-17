@@ -1,0 +1,224 @@
+msgid "recommend"
+msgstr "Recommend"
+
+msgid "search"
+msgstr "Search"
+
+msgid "click_me"
+msgstr "Click Me!ヾ(≧▽≦*)o"
+
+msgid "trending"
+msgstr "Trending"
+
+msgid "my"
+msgstr "My"
+
+msgid "my_profile"
+msgstr "My Profile"
+
+msgid "my_account"
+msgstr "My Account"
+
+msgid "private_message"
+msgstr "Messages"
+
+msgid "history"
+msgstr "History"
+
+msgid "history_title"
+msgstr "History"
+
+msgid "watch_later"
+msgstr "Watch Later"
+
+msgid "favorites"
+msgstr "Favorites"
+
+msgid "recommended_videos"
+msgstr "Recommended Videos"
+
+msgid "settings"
+msgstr "Settings"
+
+msgid "update"
+msgstr "Update"
+
+msgid "logout"
+msgstr "Logout"
+
+msgid "loading"
+msgstr "Loading..."
+
+msgid "loading_sign"
+msgstr "What did they say? Let me load it <(￣︶￣)↗[GO!]"
+
+msgid "coins"
+msgstr "Coins"
+
+msgid "fans"
+msgstr "fans"
+
+msgid "friends"
+msgstr "Friends"
+
+msgid "about"
+msgstr "About"
+
+msgid "project_belongs"
+msgstr "This project belongs to"
+
+msgid "about_description"
+msgstr "MewoBili for Zepp\nis a Bilibili watch client developed by individuals and third-party organizations.\nOn behalf of all partners involved in the development of this program, the developer declares:\n1. This program has no profit-making behavior\n2. This program will not collect any user data during operation"
+
+msgid "login_title"
+msgstr "Login"
+
+msgid "login_success"
+msgstr "Login successful!"
+
+msgid "login_scan_tip"
+msgstr "Please scan the QR code\nwith Bilibili mobile app"
+
+msgid "send_message"
+msgstr "Send Message"
+
+msgid "message_loading"
+msgstr "Loading..."
+
+msgid "message_error"
+msgstr "Error parsing message"
+
+msgid "software_update"
+msgstr "Software Update"
+
+msgid "checking_update"
+msgstr "Checking for updates..."
+
+msgid "latest_version"
+msgstr "Current version is up to date"
+
+msgid "current_device_version"
+msgstr "Current Device Version"
+
+msgid "update_content"
+msgstr "Update Content"
+
+msgid "download_tip"
+msgstr "Please join zeppMeowbili official QQ\ngroup to download and install"
+
+msgid "ai_summary"
+msgstr "AI Video Summary"
+
+msgid "no_summary_sensitive"
+msgstr "AI summary not supported (sensitive content etc.) or other request errors"
+
+msgid "no_summary_no_voice"
+msgstr "No summary (no voice detected)"
+
+msgid "no_summary"
+msgstr "No summary"
+
+msgid "video_detail"
+msgstr "Video Details"
+
+msgid "likes"
+msgstr "likes"
+
+msgid "views"
+msgstr "views"
+
+msgid "published_at"
+msgstr "Published at"
+
+msgid "watching_now"
+msgstr "watching now"
+
+msgid "like_success"
+msgstr "Like successful"
+
+msgid "like_fail"
+msgstr "Like failed, error message:"
+
+msgid "coin_success"
+msgstr "Coin successful"
+
+msgid "coin_fail"
+msgstr "Coin failed, error message:"
+
+msgid "favorite_success"
+msgstr "Added to favorites"
+
+msgid "favorite_fail"
+msgstr "Failed to add to favorites, error code:"
+
+msgid "comments"
+msgstr "Comments"
+
+msgid "write_comment"
+msgstr "Write Comment"
+
+msgid "send_danmaku"
+msgstr "Send Danmaku"
+
+msgid "prev_page"
+msgstr "Previous"
+
+msgid "next_page"
+msgstr "Next"
+
+msgid "reply_list"
+msgstr "Comments"
+
+msgid "no_replies"
+msgstr "No comments yet"
+
+msgid "video_recommendations"
+msgstr "Video Recommendations"
+
+msgid "ad_space"
+msgstr "Ad Space Reserved\nContact Developer"
+
+msgid "recommend_by"
+msgstr "Recommended by"
+
+msgid "loading"
+msgstr "Loading..."
+
+msgid "app_name"
+msgstr "MeowBili β"
+
+msgid "checking_login"
+msgstr "Checking login status..."
+
+msgid "check_network"
+msgstr "Check Network"
+
+msgid "version"
+msgstr "Version"
+
+msgid "network_check"
+msgstr "Network Check"
+
+msgid "login_status"
+msgstr "Login Status:"
+
+msgid "logged_in"
+msgstr "Logged in"
+
+msgid "not_logged_in"
+msgstr "Not logged in"
+
+msgid "troubleshooting_steps"
+msgstr "1. Check network connection\n2. Check watch and phone connection\n3. If timeout occurs, please enter manually"
+
+msgid "scan_qr_login"
+msgstr "Scan QR Code to Login"
+
+msgid "enter_homepage"
+msgstr "Enter Homepage"
+
+msgid "donate_message"
+msgstr "If you like our app\nPlease consider donating\nto support our development\nThank you for your support"
+
+msgid "developer_name"
+msgstr "Zeele·Zerv"

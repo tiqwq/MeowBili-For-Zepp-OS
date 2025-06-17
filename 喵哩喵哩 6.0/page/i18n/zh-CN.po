@@ -1,0 +1,230 @@
+msgid "recommend"
+msgstr "推荐"
+
+msgid "search"
+msgstr "搜索"
+
+msgid "config_error"
+msgstr "配置错误，请检查登录状态"
+
+msgid "network_error"
+msgstr "网络错误，请检查网络连接"
+
+msgid "resource_error"
+msgstr "资源加载失败，请重试"
+
+msgid "click_me"
+msgstr "点我!ヾ(≧▽≦*)o"
+
+msgid "trending"
+msgstr "热榜"
+
+msgid "my"
+msgstr "我的"
+
+msgid "my_account" 
+msgstr "我的账号"
+
+msgid "my_profile"
+msgstr "我的账号"
+
+msgid "private_message"
+msgstr "私信消息"
+
+msgid "send_message"
+msgstr "私信发送"
+
+msgid "history"
+msgstr "历史记录" 
+
+msgid "history_title"
+msgstr "历史记录"
+
+msgid "watch_later"
+msgstr "稍后再看"
+
+msgid "favorites"
+msgstr "我的收藏"
+
+msgid "recommended_videos"
+msgstr "推荐的视频"
+
+msgid "settings"
+msgstr "设置"
+
+msgid "loading"
+msgstr "加载中..."
+
+msgid "message_loading"
+msgstr "加载中..."
+
+msgid "loading_sign"
+msgstr "说了些什么呢，让我加载一下<(￣︶￣)↗[GO!]"
+
+msgid "coins"
+msgstr "硬币"
+
+msgid "fans"
+msgstr "粉丝"
+
+msgid "friends"
+msgstr "好友"
+
+msgid "about"
+msgstr "关于"
+
+msgid "project_belongs"
+msgstr "本项目归属于"
+
+msgid "about_description"
+msgstr "MewoBili for Zepp\n是由个人及第三方组织开发的哔哩哔哩手表客户端。\n开发者谨代表所有参与本程序开发工作的伙伴们声明：\n1.本程序无任何盈利行为\n2.本程序在运行过程中不会\n    收集任何用户数据"
+
+msgid "login_title"
+msgstr "登入"
+
+msgid "login_success"
+msgstr "登录成功！"
+
+msgid "login_scan_tip"
+msgstr "主人请使用\n手机客户端扫码登入"
+
+msgid "message_error"
+msgstr "解析消息出错"
+
+msgid "software_update"
+msgstr "软件更新"
+
+msgid "checking_update"
+msgstr "正在检查更新..."
+
+msgid "latest_version"
+msgstr "当前已是最新版本"
+
+msgid "current_device_version"
+msgstr "当前设备版本"
+
+msgid "update_content"
+msgstr "更新内容"
+
+msgid "download_tip"
+msgstr "请前往zeppMeowbili官方QQ\n群下载并安装"
+
+msgid "ai_summary"
+msgstr "AI视频总结"
+
+msgid "no_summary_sensitive"
+msgstr "不支持AI摘要（敏感内容等）或其他因素导致请求异常"
+
+msgid "no_summary_no_voice"
+msgstr "无摘要（未识别到语音）"
+
+msgid "no_summary"
+msgstr "无摘要"
+
+msgid "video_detail"
+msgstr "视频详情"
+
+msgid "likes"
+msgstr "点赞"
+
+msgid "views"
+msgstr "播放"
+
+msgid "published_at"
+msgstr "发布于"
+
+msgid "watching_now"
+msgstr "人在看"
+
+msgid "like_success"
+msgstr "点赞成功"
+
+msgid "like_fail"
+msgstr "点赞失败，报错信息："
+
+msgid "coin_success"
+msgstr "投币成功"
+
+msgid "coin_fail"
+msgstr "投币失败，报错信息："
+
+msgid "favorite_success"
+msgstr "收藏成功"
+
+msgid "favorite_fail"
+msgstr "收藏失败，错误码："
+
+msgid "comments"
+msgstr "评论区"
+
+msgid "write_comment"
+msgstr "发评论"
+
+msgid "send_danmaku"
+msgstr "发弹幕"
+
+msgid "prev_page"
+msgstr "上一页"
+
+msgid "next_page"
+msgstr "下一页"
+
+msgid "reply_list"
+msgstr "评论列表"
+
+msgid "no_replies"
+msgstr "暂无评论"
+
+msgid "video_recommendations"
+msgstr "视频推荐"
+
+msgid "ad_space"
+msgstr "预留广告位，合作\n请联系开发者"
+
+msgid "recommend_by"
+msgstr "推荐"
+
+msgid "app_name"
+msgstr "MeowBili β"
+
+msgid "checking_login"
+msgstr "检查登录状态中..."
+
+msgid "check_network"
+msgstr "检查网络状态"
+
+msgid "version"
+msgstr "版本"
+
+msgid "network_check"
+msgstr "网络检测"
+
+msgid "login_status"
+msgstr "登录状态:"
+
+msgid "logged_in"
+msgstr "已登录"
+
+msgid "not_logged_in"
+msgstr "未登录"
+
+msgid "troubleshooting_steps"
+msgstr "1. 检查网络连接\n2.检测手表与手机的连接状态\n3.可能是特殊原因导致检测超时，请手动进入页面"
+
+msgid "scan_qr_login"
+msgstr "扫描二维码以登录"
+
+msgid "enter_homepage"
+msgstr "直接进入首页"
+
+msgid "update"
+msgstr "更新"
+
+msgid "logout"
+msgstr "退出登录"
+
+msgid "donate_message"
+msgstr "如果您觉得我们的app还不错\n考虑向我们捐赠\n以支持我们继续开发\n感谢每一位用户"
+
+msgid "developer_name"
+msgstr "Zeele·Zerv"

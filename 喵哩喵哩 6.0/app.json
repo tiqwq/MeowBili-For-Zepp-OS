@@ -2,18 +2,19 @@
   "configVersion": "v3",
   "app": {
     "appId": 1068599,
-    "appName": "喵喵哔哩",
+    "appName": "喵喵浏览器",
     "appType": "app",
     "version": {
       "code": 1,
       "name": "4.0.0"
     },
     "icon": "icon.png",
-    "vender": "Yiaolin,Gin",
+    "vender": "YiQWQ,Struggle",
     "description": "A third party BiliBili for Amazfit Zepp OS"
   },
   "permissions": [
     "data:os.device.info",
+    "data:user.info",
     "device:os.local_storage"
   ],
   "runtime": {
@@ -27,39 +28,43 @@
     "common": {
       "module": {
         "page": {
-          "pages": [ 
-            
-           "page/index",
-            "page/account",
-            "page/videopush",
-           
-            "page/login",
-            "page/about",
-            "page/trending",
-            "page/searchresult",
-            "page/network",
-            "page/videoaisummary","page/board",
-            
-
-            "page/videoreplies",
-            "page/videodetail",
-            "page/message",
-            "page/messageList",
-            "page/info_main",
-            "page/columns",
-            "page/update",
-            "page/laterSee",
-            "page/setting",
-            "page/history",
-            "page/starFolder",
-            "page/bulletin",
-            "page/allBulletin",
-           "page/starVideoList",
-            "page/developersVideoPush",
-            "page/searchresultcolumns"
+          "pages": [
+            "page/Browser_Page/info_index",
+            "page/Browser_Page/webdev",
+            "page/Browser_Page/Plugin",
+            "page/Browser_Page/setting",
+            "page/Browser_Page/biliweb",
+            "page/Bili_Page/index",
+            "page/Browser_Page/browser_start",
+            "page/Bili_Page/account",
+            "page/Bili_Page/allBulletin",
+            "page/Bili_Page/bulletin",
+            "page/Bili_Page/columns",
+            "page/Bili_Page/history",
+            "page/Bili_Page/laterSee",
+            "page/Bili_Page/login",
+            "page/Bili_Page/message",
+            "page/Bili_Page/messageList",
+            "page/Bili_Page/refreshCookie",
+            "page/Bili_Page/searchresult",
+            "page/Bili_Page/searchresultcolumns",
+            "page/Bili_Page/starFolder",
+            "page/Bili_Page/starVideoList",
+            "page/Bili_Page/videoaisummary",
+            "page/Bili_Page/videodetail",
+            "page/Bili_Page/videopush",
+            "page/Bili_Page/videoreplies",
+            "page/Other_Page/about",
+            "page/Other_Page/board",
+            "page/Other_Page/developersVideoPush",
+            "page/Other_Page/network",
+            "page/Other_Page/setting",
+            "page/Other_Page/starthello",
+            "page/Other_Page/trending",
+            "page/Other_Page/update"
           ]
         },
-        "app-side": { 
+        "app-side": {
           "path": "app-side/index"
         }
       },
@@ -68,13 +73,12 @@
           "st": "r",
           "dw": 480
         }
-       
       ]
     }
   },
   "i18n": {
     "en-US": {
-      "appName": "MeowBili"
+      "appName": "MeowBrowser"
     }
   },
   "defaultLanguage": "en-US"
